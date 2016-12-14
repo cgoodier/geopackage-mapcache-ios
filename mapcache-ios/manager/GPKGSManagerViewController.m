@@ -102,12 +102,16 @@ const char ConstantKey;
     }
     self.retainModifiedForMap = false;
     
+    [self setupSearch];
+    [self update];
+}
+
+- (void) setupSearch {
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.searchResultsUpdater = self;
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.hidesNavigationBarDuringPresentation = YES;
     self.searchController.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.searchController.searchBar.delegate = self;
     self.searchController.searchBar.barTintColor = [UIColor colorWithRed:47.0/255.0f green:61.0/255.0f blue:75.0/255.0f alpha:1.0];
     [self.searchController.searchBar setTintColor:[UIColor colorWithRed:128.0/255.0f green:194.0/255.0f blue:212.0/255.0f alpha:1.0]];
     self.definesPresentationContext = YES;
@@ -116,8 +120,6 @@ const char ConstantKey;
     self.tableView.tableHeaderView = self.segmentedView;
     [self.searchController.searchBar setBackgroundImage:[[UIImage alloc]init]];
     [self.tableView.tableHeaderView setBackgroundColor:[UIColor colorWithRed:47.0/255.0f green:61.0/255.0f blue:75.0/255.0f alpha:1.0]];
-    
-    [self update];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -125,19 +127,17 @@ const char ConstantKey;
     
     [[self navigationController] setNavigationBarHidden:NO animated:YES];
 
-    
-    if(self.active.modified){
-        if(self.retainModifiedForMap){
+    if(self.active.modified) {
+        if(self.retainModifiedForMap) {
             self.retainModifiedForMap = false;
-        }else{
+        } else {
             [self.active setModified:false];
         }
         [self updateAndReloadData];
     }
 }
 
-- (void) updateAndReloadDataNotification:(NSNotification *) notification
-{
+- (void) updateAndReloadDataNotification:(NSNotification *) notification {
     if ([[notification name] isEqualToString:GPKGS_IMPORT_GEOPACKAGE_NOTIFICATION]){
         [self updateAndReloadData];
     }
@@ -149,13 +149,6 @@ const char ConstantKey;
 
 - (IBAction)searchFilterChanged:(id)sender {
     [self updateAndReloadData];
-}
-
-- (BOOL) searchBarShouldEndEditing:(UISearchBar *)searchBar {
-    self.searchController.searchBar.showsScopeBar = YES;
-    [self.searchController.searchBar sizeToFit];
-    [self.searchController.searchBar setShowsCancelButton:NO animated:YES];
-    return YES;
 }
 
 -(void) maybeAddTable: (GPKGSTable *) table toArray: (NSMutableArray *) array {
@@ -210,9 +203,7 @@ const char ConstantKey;
     [addButton addTarget:self action:@selector(headerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:addButton];
     
-    
-    // Place button on far right margin of header
-    addButton.translatesAutoresizingMaskIntoConstraints = NO; // use autolayout constraints instead
+    addButton.translatesAutoresizingMaskIntoConstraints = NO;
     [addButton.trailingAnchor constraintEqualToAnchor:view.layoutMarginsGuide.trailingAnchor].active = YES;
     [addButton.bottomAnchor constraintEqualToAnchor:view.layoutMarginsGuide.bottomAnchor].active = YES;
 }
@@ -246,7 +237,6 @@ const char ConstantKey;
             GPKGSDatabase * theDatabase = [[GPKGSDatabase alloc] initWithName:database andExpanded:expanded];
             [self.databases setObject:theDatabase forKey:database];
             NSMutableArray *dbCells = [[NSMutableArray alloc] init];
-            //[self.tableCells addObject:theDatabase];
             NSMutableArray * tables = [[NSMutableArray alloc] init];
             
             GPKGContentsDao * contentsDao = [geoPackage getContentsDao];
@@ -264,7 +254,6 @@ const char ConstantKey;
                 [tables addObject:table];
                 [theDatabase addFeature:table];
                 [self maybeAddTable:table toArray:dbCells];
-                //[dbCells addObject:table];
             }
             
             for(NSString * tableName in [geoPackage getTileTables]){
@@ -278,7 +267,6 @@ const char ConstantKey;
                 [tables addObject:table];
                 [theDatabase addTile:table];
                 [self maybeAddTable:table toArray:dbCells];
-                //[dbCells addObject:table];
             }
             
             for(GPKGSFeatureOverlayTable * table in [self.active featureOverlays:database]){
@@ -289,7 +277,6 @@ const char ConstantKey;
                 [tables addObject:table];
                 [theDatabase addFeatureOverlay:table];
                 [self maybeAddTable:table toArray:dbCells];
-                //[dbCells addObject: table];
             }
             [self.tableCells setObject:dbCells forKey:database];
             
@@ -335,7 +322,6 @@ const char ConstantKey;
     
     NSObject * cellObject = [[self.tableCells objectForKey:[self.databaseNames objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
     
-    //NSObject * cellObject = [self.tableCells objectAtIndex:indexPath.row];
     if([cellObject isKindOfClass:[GPKGSDatabase class]]){
         cell = [tableView dequeueReusableCellWithIdentifier:GPKGS_CELL_DATABASE forIndexPath:indexPath];
         GPKGSDatabaseCell * dbCell = (GPKGSDatabaseCell *) cell;
@@ -424,14 +410,6 @@ const char ConstantKey;
     return cell;
 }
 
-/*-(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSObject * cellObject = [self.tableCells objectAtIndex:indexPath.row];
-    if([cellObject isKindOfClass:[GPKGSDatabase class]]){
-        GPKGSDatabase * database = (GPKGSDatabase *) cellObject;
-        [self expandOrCollapseDatabase:database atIndexPath:indexPath];
-    }
-}*/
-
 -(void) expandOrCollapseDatabase: (GPKGSDatabase *) database {
     database.expanded = !database.expanded;
     if(database.expanded){
@@ -461,6 +439,118 @@ const char ConstantKey;
     }
     [self updateClearActiveButton];
 }
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_DOWNLOAD_FILE])
+    {
+        GPKGSDownloadFileViewController *downloadFileViewController = segue.destinationViewController;
+    }else if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_DISPLAY_TEXT]){
+        GPKGSDisplayTextViewController *displayTextViewController = segue.destinationViewController;
+        if([sender isKindOfClass:[GPKGSDatabase class]]){
+            GPKGSDatabase * database = (GPKGSDatabase *)sender;
+            displayTextViewController.database = database;
+        }else if([sender isKindOfClass:[GPKGSTable class]]){
+            GPKGSTable * table = (GPKGSTable *)sender;
+            displayTextViewController.table = table;
+        }
+    }else if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_CREATE_FEATURES]){
+        GPKGSCreateFeaturesViewController *createFeaturesViewController = segue.destinationViewController;
+        GPKGSDatabase * database = (GPKGSDatabase *)sender;
+        createFeaturesViewController.delegate = self;
+        createFeaturesViewController.database = database;
+        createFeaturesViewController.manager = self.manager;
+    }else if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_CREATE_TILES]){
+        GPKGSManagerCreateTilesViewController *createTilesViewController = segue.destinationViewController;
+        GPKGSDatabase * database = (GPKGSDatabase *)sender;
+        createTilesViewController.delegate = self;
+        createTilesViewController.database = database;
+        createTilesViewController.manager = self.manager;
+        createTilesViewController.data = [[GPKGSCreateTilesData alloc] init];
+    }else if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_LOAD_TILES]){
+        GPKGSManagerLoadTilesViewController *loadTilesViewController = segue.destinationViewController;
+        GPKGSTable * table = (GPKGSTable *)sender;
+        loadTilesViewController.delegate = self;
+        loadTilesViewController.table = table;
+        loadTilesViewController.manager = self.manager;
+        loadTilesViewController.data = [[GPKGSLoadTilesData alloc] init];
+    }else if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_EDIT_FEATURES]){
+        GPKGSEditFeaturesViewController *editFeaturesViewController = segue.destinationViewController;
+        GPKGSTable * table = (GPKGSTable *)sender;
+        editFeaturesViewController.table = table;
+        editFeaturesViewController.manager = self.manager;
+        editFeaturesViewController.delegate = self;
+    }else if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_EDIT_TILES]){
+        GPKGSEditTilesViewController *editTilesViewController = segue.destinationViewController;
+        GPKGSTable * table = (GPKGSTable *)sender;
+        editTilesViewController.table = table;
+        editTilesViewController.manager = self.manager;
+    }else if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_CREATE_FEATURE_TILES]){
+        GPKGSCreateFeatureTilesViewController *createFeatureTilesViewController = segue.destinationViewController;
+        GPKGSTable * table = (GPKGSTable *)sender;
+        createFeatureTilesViewController.delegate = self;
+        createFeatureTilesViewController.database = table.database;
+        createFeatureTilesViewController.name = table.name;
+        createFeatureTilesViewController.manager = self.manager;
+        createFeatureTilesViewController.featureTilesDrawData = [[GPKGSFeatureTilesDrawData alloc] init];
+        createFeatureTilesViewController.generateTilesData =  [[GPKGSGenerateTilesData alloc] init];
+    }else if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_ADD_TILE_OVERLAY]){
+        GPKGSAddTileOverlayViewController *addTileOverlayViewController = segue.destinationViewController;
+        GPKGSTable * table = (GPKGSTable *)sender;
+        addTileOverlayViewController.delegate = self;
+        addTileOverlayViewController.table = table;
+        addTileOverlayViewController.manager = self.manager;
+    }else if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_EDIT_TILE_OVERLAY]){
+        GPKGSManagerEditTileOverlayViewController *editTileOverlayViewController = segue.destinationViewController;
+        GPKGSFeatureOverlayTable * table = (GPKGSFeatureOverlayTable *)sender;
+        editTileOverlayViewController.delegate = self;
+        editTileOverlayViewController.table = table;
+        editTileOverlayViewController.manager = self.manager;
+    }else if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_LINKED_TABLES]){
+        GPKGSLinkedTablesViewController *linkedTablesViewController = segue.destinationViewController;
+        GPKGSTable * table = (GPKGSTable *)sender;
+        linkedTablesViewController.delegate = self;
+        linkedTablesViewController.table = table;
+        linkedTablesViewController.manager = self.manager;
+    } else if ([segue.identifier isEqualToString:@"showGeoPackageInfo"]) {
+        GPKGSDatabase *gp = (GPKGSDatabase *)sender;
+        NSLog(@"gp name %@", gp.name);
+        InfoTableViewController *c = segue.destinationViewController;
+        c.database = gp;
+    } else if ([segue.identifier isEqualToString:@"featureTableSegue"]) {
+        FeatureTableTableViewController *vc = (FeatureTableTableViewController *)[segue destinationViewController];
+        GPKGSTableCell *cell = (GPKGSTableCell *)sender;
+        [vc setTable:(GPKGSFeatureTable *)cell.table];
+        [vc setGeoPackage:cell.table.geoPackage];
+        [vc setDao:(GPKGFeatureDao *)cell.dao];
+    } else if ([segue.identifier isEqualToString:@"tileTableSegue"]) {
+        TileTableTableViewController *vc = (TileTableTableViewController *)[segue destinationViewController];
+        GPKGSTableCell *cell = (GPKGSTableCell *)sender;
+        [vc setTable:(GPKGSTileTable *)cell.table];
+        [vc setGeoPackage:cell.table.geoPackage];
+        [vc setDao:(GPKGTileDao *)cell.dao];
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     
@@ -813,7 +903,7 @@ const char ConstantKey;
 }
 
 -(void) viewTableOption: (GPKGSTable *) table{
-        [self performSegueWithIdentifier:GPKGS_MANAGER_SEG_DISPLAY_TEXT sender:table];
+    [self performSegueWithIdentifier:GPKGS_MANAGER_SEG_DISPLAY_TEXT sender:table];
 }
 
 -(void) editFeaturesTableOption: (GPKGSTable *) table{
@@ -1140,20 +1230,6 @@ const char ConstantKey;
     }
 }
 
-/*
-- (void)url:(NSString *)url withName: (NSString *) name downloadedFile:(BOOL)downloaded withError: (NSString *) error{
-    if(downloaded){
-        [self updateAndReloadData];
-    }
-    if(error != nil){
-        [GPKGSUtils showMessageWithDelegate:self
-                                   andTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_IMPORT_URL_ERROR]
-                                 andMessage:[NSString stringWithFormat:@"Error downloading '%@' at:\n%@\n\nError: %@", name, url, error]];
-    }
-}
-*/
-
-
 - (void)createFeaturesViewController:(GPKGSCreateFeaturesViewController *)controller createdFeatures:(BOOL)created withError: (NSString *) error{
     if(created){
         [self updateAndReloadData];
@@ -1241,6 +1317,7 @@ const char ConstantKey;
     }
 }
 
+/*
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     
     if([segue.identifier isEqualToString:GPKGS_MANAGER_SEG_DOWNLOAD_FILE])
@@ -1333,6 +1410,7 @@ const char ConstantKey;
     }
     
 }
+ */
 
 -(void) addExpandedSetting: (NSString *) database{
     NSArray * expandedDatabases = [self.settings stringArrayForKey:GPKGS_EXPANDED_PREFERENCE];
