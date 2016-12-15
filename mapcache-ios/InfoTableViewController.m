@@ -22,6 +22,7 @@
 #import "FeatureTableTableViewController.h"
 #import "TileTableTableViewController.h"
 #import "SrsViewController.h"
+#import "GPKGSUtils.h"
 
 @interface InfoTableViewController ()
 
@@ -38,6 +39,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setup];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void) setup {
     self.tileTablesExpanded = YES;
     self.featureTablesExpanded = YES;
     self.spatialReferenceSystemsExpanded = YES;
@@ -51,17 +61,6 @@
     }
     
     [srsResults close];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -262,10 +261,26 @@
     //[self updateClearActiveButton];
 }
 
-
 - (void) setDatabase:(GPKGSDatabase *)database {
     GPKGGeoPackageManager *manager = [GPKGGeoPackageFactory getManager];
     self.geoPackage = [manager open:database.name];
+}
+
+- (IBAction)shareButtonPress:(id)sender {
+    NSString *path = [[GPKGGeoPackageFactory getManager] documentsPathForDatabase:self.geoPackage.name];
+    
+    if(path != nil){
+        NSURL * databaseUrl = [NSURL fileURLWithPath:path];
+        
+        UIDocumentInteractionController *shareDocumentController = [UIDocumentInteractionController interactionControllerWithURL:databaseUrl];
+        [shareDocumentController setUTI:@"public.database"];
+        [shareDocumentController presentOpenInMenuFromRect:self.view.bounds inView:self.view animated:YES];
+    }
+    /*else{
+        [GPKGSUtils showMessageWithDelegate:self
+                                   andTitle:[NSString stringWithFormat:@"Share Database %@", database]
+                                 andMessage:[NSString stringWithFormat:@"No path was found for database %@", database]];
+    }*/
 }
 
 - (IBAction)deleteButtonPress:(id)sender {
@@ -286,6 +301,55 @@
     [self presentViewController:alert animated:YES completion:nil];
 
 }
+
+- (IBAction)editButtonPress:(id)sender {
+    
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@ '%@'", [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_RENAME_LABEL], self.geoPackage.name] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"New GeoPackage Name";
+    }];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    
+    }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"Rename" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UITextField *field = (UITextField *)[alert.textFields objectAtIndex:0];
+        
+        NSString * newName = field.text;
+        if (newName != nil && [newName length] > 0 && ![newName isEqualToString:self.geoPackage.name]) {
+            @try {
+                if ([[GPKGGeoPackageFactory getManager] rename:self.geoPackage.name to:newName]){
+                    [self.active renameDatabase:self.geoPackage.name asNewDatabase:newName];
+                    GPKGGeoPackageManager *manager = [GPKGGeoPackageFactory getManager];
+                    self.geoPackage = [manager open:newName];
+                    [self setup];
+                    [self.tableView reloadData];
+                } else {
+                    [GPKGSUtils showMessageWithDelegate:self
+                                               andTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_RENAME_LABEL]
+                                             andMessage:[NSString stringWithFormat:@"Rename from %@ to %@ was not successful", self.geoPackage.name, newName]];
+                     
+                }
+            }
+            @catch (NSException *exception) {
+                [GPKGSUtils showMessageWithDelegate:self
+                                           andTitle:[NSString stringWithFormat:@"Rename %@ to %@", self.geoPackage.name, newName]
+                                         andMessage:[NSString stringWithFormat:@"%@", [exception description]]];
+            }
+        }
+
+    }]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (IBAction)copyButtonPress:(id)sender {
+    
+}
+
 
 -(void) deleteDatabaseOption: (NSString *) database{
     NSString * label = [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_DELETE_LABEL];
@@ -354,7 +418,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [self.geoPackage deleteUserTable:tableName];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+    }
 }
 
 #pragma mark - Navigation
