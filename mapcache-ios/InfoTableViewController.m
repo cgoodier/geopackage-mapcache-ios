@@ -304,7 +304,6 @@
 
 - (IBAction)editButtonPress:(id)sender {
     
-    
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@ '%@'", [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_RENAME_LABEL], self.geoPackage.name] message:nil preferredStyle:UIAlertControllerStyleAlert];
     
     [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
@@ -348,8 +347,44 @@
 
 - (IBAction)copyButtonPress:(id)sender {
     
-}
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@ '%@'", [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_COPY_LABEL], self.geoPackage.name] message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = [NSString stringWithFormat:@"%@%@", self.geoPackage.name, [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_COPY_SUFFIX]];
+        textField.placeholder = @"New GeoPackage Name";
+    }];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"Create Copy" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UITextField *field = (UITextField *)[alert.textFields objectAtIndex:0];
+        
+        NSString * newName = field.text;
+        if (newName != nil && [newName length] > 0 && ![newName isEqualToString:self.geoPackage.name]) {
+            @try {
+                if ([[GPKGGeoPackageFactory getManager] copy:self.geoPackage.name to:newName]){
+                    self.active.modified = YES;
 
+                } else {
+                    [GPKGSUtils showMessageWithDelegate:self
+                                               andTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_RENAME_LABEL]
+                                             andMessage:[NSString stringWithFormat:@"Copy from %@ to %@ was not successful", self.geoPackage.name, newName]];
+                    
+                }
+            }
+            @catch (NSException *exception) {
+                [GPKGSUtils showMessageWithDelegate:self
+                                           andTitle:[NSString stringWithFormat:@"Copy %@ to %@", self.geoPackage.name, newName]
+                                         andMessage:[NSString stringWithFormat:@"%@", [exception description]]];
+            }
+        }
+        
+    }]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
 -(void) deleteDatabaseOption: (NSString *) database{
     NSString * label = [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_DELETE_LABEL];
