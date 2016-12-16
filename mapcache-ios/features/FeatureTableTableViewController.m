@@ -15,6 +15,7 @@
 #import <GPKGDataColumnsDao.h>
 #import "UITableViewHeaderFooterView+GeoPackage.h"
 #import "SrsViewController.h"
+#import "GPKGSEditFeaturesViewController.h"
 #import <GPKGProjectionTransform.h>
 #import <GPKGProjectionConstants.h>
 #import "FeatureHeaderTableViewCell.h"
@@ -204,22 +205,8 @@ static NSInteger const NUMBER_OF_SECTIONS = 5;
     UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:label
                                                            style:UIAlertActionStyleDestructive
                                                          handler:^(UIAlertAction * action) {
-                                                             
-                                                             GPKGGeoPackage * geoPackage = [[GPKGGeoPackageFactory getManager] open:self.table.database];
-                                                             @try {
-                                                                 [geoPackage deleteUserTable:self.table.name];
-                                                                 [[GPKGSDatabases getInstance] removeTable:self.table];
-                                                                 [self.navigationController popViewControllerAnimated:YES];
-                                                             }
-                                                             @catch (NSException *exception) {
-                                                                 [GPKGSUtils showMessageWithDelegate:self
-                                                                                            andTitle:[NSString stringWithFormat:@"%@ %@ - %@ Table", [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_DELETE_LABEL], self.table.database, self.table.name]
-                                                                                          andMessage:[NSString stringWithFormat:@"%@", [exception description]]];
-                                                             }
-                                                             @finally {
-                                                                 [geoPackage close];
-                                                             }
-                                                        }];
+                                                             [self handleDelete:action];
+                                                         }];
     UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_CANCEL_LABEL]
                                                            style:UIAlertActionStyleCancel
                                                          handler:^(UIAlertAction *action) {}];
@@ -228,6 +215,24 @@ static NSInteger const NUMBER_OF_SECTIONS = 5;
     [alert addAction:cancelAction];
     
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void) handleDelete: (UIAlertAction *) action {
+    GPKGGeoPackage * geoPackage = [[GPKGGeoPackageFactory getManager] open:self.table.database];
+    @try {
+        [geoPackage deleteUserTable:self.table.name];
+        [[GPKGSDatabases getInstance] removeTable:self.table];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    @catch (NSException *exception) {
+        [GPKGSUtils showMessageWithDelegate:self
+                                   andTitle:[NSString stringWithFormat:@"%@ %@ - %@ Table", [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_DELETE_LABEL], self.table.database, self.table.name]
+                                 andMessage:[NSString stringWithFormat:@"%@", [exception description]]];
+    }
+    @finally {
+        [geoPackage close];
+    }
+
 }
 
 - (IBAction)editButtonPressed:(id)sender {
@@ -276,6 +281,11 @@ static NSInteger const NUMBER_OF_SECTIONS = 5;
         SrsViewController *vc = (SrsViewController *)[segue destinationViewController];
         GPKGSTableCell *cell = (GPKGSTableCell *)sender;
         [vc setSrs:cell.srs];
+    } else if ([segue.identifier isEqualToString:@"featureTableEditSegue"]) {
+        GPKGSEditFeaturesViewController *vc = (GPKGSEditFeaturesViewController *)[segue destinationViewController];
+        [vc setManager:[GPKGGeoPackageFactory getManager]];
+        [vc setTable:self.table];
+        
     }
 }
 

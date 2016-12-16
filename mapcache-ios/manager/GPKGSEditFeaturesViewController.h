@@ -25,5 +25,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *geometryTypeButton;
 @property (weak, nonatomic) IBOutlet UITextField *zTextField;
 @property (weak, nonatomic) IBOutlet UITextField *mTextField;
+@property (weak, nonatomic) IBOutlet UILabel *projectionLabel;
 
 @end

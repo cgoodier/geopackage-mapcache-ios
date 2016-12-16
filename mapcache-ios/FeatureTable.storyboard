@@ -79,7 +79,7 @@
                                                         <barButtonItem style="plain" systemItem="flexibleSpace" id="D5o-rl-Q2A"/>
                                                         <barButtonItem image="pencil" id="yfP-ba-Ztp">
                                                             <connections>
-                                                                <action selector="editButtonPressed:" destination="fSp-CT-qwF" id="9Ca-49-C54"/>
+                                                                <segue destination="Egz-EX-PZ1" kind="show" identifier="featureTableEditSegue" id="wSr-fB-Bv0"/>
                                                             </connections>
                                                         </barButtonItem>
                                                         <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="Etg-L3-3cv"/>
@@ -347,6 +347,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hQf-fm-uDR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="47.200000000000003" y="142.57871064467767"/>
+        </scene>
+        <!--FeatureTableEdit-->
+        <scene sceneID="uVl-yL-bbZ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="FeatureTableEdit" id="Egz-EX-PZ1" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XgW-Ks-pM2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="812" y="58"/>
         </scene>
         <!--SrsTable-->
         <scene sceneID="lao-sj-4n9">
