@@ -15,12 +15,22 @@
 #import <GPKGDataColumnsDao.h>
 #import "UITableViewHeaderFooterView+GeoPackage.h"
 #import "SrsViewController.h"
+#import <GPKGProjectionTransform.h>
+#import <GPKGProjectionConstants.h>
+#import "FeatureHeaderTableViewCell.h"
+#import "GPKGSProperties.h"
+#import "GPKGSUtils.h"
+#import <GPKGGeoPackageFactory.h>
+#import "GPKGSDatabases.h"
 
 @interface FeatureTableTableViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *featureTableNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *numberOfFeaturesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *geopackageNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *geomTypeNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *xBoundsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *yBoundsLabel;
 @property (weak, nonatomic) GPKGFeatureDao *featureDao;
 @property (weak, nonatomic) GPKGFeatureTable *featureTable;
 @property (strong, nonatomic) NSMutableDictionary *collapsedSections;
@@ -30,14 +40,18 @@
 
 @implementation FeatureTableTableViewController
 
+static NSInteger const HEADER_SECTION = 0;
+static NSInteger const LINKED_TILE_LAYER_SECTION = 1;
+static NSInteger const SRS_SECTION = 2;
+static NSInteger const GEOMETRY_COLUMN_SECTION = 3;
+static NSInteger const COLUMNS_SECTION = 4;
+static NSInteger const NUMBER_OF_SECTIONS = 5;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Feature Table";
-    self.featureTableNameLabel.text = [NSString stringWithFormat:@"%@", self.table.name];
-    self.numberOfFeaturesLabel.text = [NSString stringWithFormat:@"%d Features", self.table.count];
-    self.geopackageNameLabel.text = [NSString stringWithFormat:@"GeoPackage: %@", self.table.geoPackage.name];
-    
     self.featureTable = [self.dao getFeatureTable];
+    
     self.collapsedSections = [[NSMutableDictionary alloc] init];
     
     self.dcDao = [self.geoPackage getDataColumnsDao];
@@ -51,15 +65,15 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return NUMBER_OF_SECTIONS;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     BOOL collpased = [(NSNumber *)[self.collapsedSections objectForKey:[NSNumber numberWithInteger:section]] boolValue];
     if (collpased) return 0;
-    if (section == 0 || section == 1) {
+    if (section == HEADER_SECTION || section == SRS_SECTION || section == GEOMETRY_COLUMN_SECTION) {
         return 1;
-    } else {
+    } else if (section == COLUMNS_SECTION) {
         return [self.featureTable columns].count;
     }
     return 0;
@@ -68,17 +82,22 @@
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     
     NSString *arrow = [(NSNumber *)[self.collapsedSections objectForKey:[NSNumber numberWithInteger:section]] boolValue] ? @"\u25b6 " : @"\u25bc ";
-    if (section == 0) {
+    if (section == LINKED_TILE_LAYER_SECTION) {
+        return [arrow stringByAppendingString:@"Linked Tile Layers"];
+    } else if (section == SRS_SECTION) {
         return [arrow stringByAppendingString:@"Spatial Reference System"];
-    } else if (section == 1) {
+    } else if (section == GEOMETRY_COLUMN_SECTION) {
         return [arrow stringByAppendingString:@"Geometry Column"];
-    } else if (section == 2) {
+    } else if (section == COLUMNS_SECTION) {
         return [arrow stringByAppendingString:@"Columns"];
     }
     return nil;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == HEADER_SECTION) {
+        return CGFLOAT_MIN;
+    }
     return UITableViewAutomaticDimension;
 }
 
@@ -120,7 +139,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.section == 0) {
+    if (indexPath.section == HEADER_SECTION) {
+        FeatureHeaderTableViewCell *cell = (FeatureHeaderTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"HeaderCell" forIndexPath:indexPath];
+        [cell setupCellWithTable:self.table andDao:self.dao];
+        return cell;
+    } else if (indexPath.section == SRS_SECTION) {
         GPKGSTableCell *cell = (GPKGSTableCell *)[tableView dequeueReusableCellWithIdentifier:GPKGS_CELL_SRS forIndexPath:indexPath];
         
         NSNumber *srsId = self.dao.geometryColumns.srsId;
@@ -128,13 +151,13 @@
         cell.srs = srs;
         cell.tableName.text = [NSString stringWithFormat:@"%@ %@", srs.srsName, srs.srsId];
         return cell;
-    } else if (indexPath.section == 1) {
+    } else if (indexPath.section == GEOMETRY_COLUMN_SECTION) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ColumnCell" forIndexPath:indexPath];
         GPKGFeatureColumn *gc = [self.featureTable getGeometryColumn];
         cell.textLabel.text = gc.name;
         cell.detailTextLabel.text = [GPKGDataTypes name:gc.dataType];
         return cell;
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == COLUMNS_SECTION) {
         GPKGUserColumn *row = (GPKGUserColumn *)[[self.featureTable columns] objectAtIndex:indexPath.row];
         GPKGDataColumns *dc = [self.dcDao getDataColumnByTableName:self.table.name andColumnName:row.name];
         
@@ -157,7 +180,8 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section != 2) return UITableViewAutomaticDimension;
+    if (indexPath.section == HEADER_SECTION) return 144.0f;
+    if (indexPath.section != COLUMNS_SECTION) return UITableViewAutomaticDimension;
     
     GPKGUserColumn *row = (GPKGUserColumn *)[[self.featureTable columns] objectAtIndex:indexPath.row];
     GPKGDataColumns *dc = [self.dcDao getDataColumnByTableName:self.table.name andColumnName:row.name];
@@ -166,6 +190,48 @@
         return 118.0f;
     }
     return UITableViewAutomaticDimension;
+}
+
+- (IBAction)settingsButtonPressed:(id)sender {
+
+}
+
+- (IBAction)deleteButtonPressed:(id)sender {
+    NSString * label = [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_DELETE_LABEL];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:label
+                                                                   message:[NSString stringWithFormat:@"%@ %@ - %@?", label, self.geoPackage.name, self.table.name]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* deleteAction = [UIAlertAction actionWithTitle:label
+                                                           style:UIAlertActionStyleDestructive
+                                                         handler:^(UIAlertAction * action) {
+                                                             
+                                                             GPKGGeoPackage * geoPackage = [[GPKGGeoPackageFactory getManager] open:self.table.database];
+                                                             @try {
+                                                                 [geoPackage deleteUserTable:self.table.name];
+                                                                 [[GPKGSDatabases getInstance] removeTable:self.table];
+                                                                 [self.navigationController popViewControllerAnimated:YES];
+                                                             }
+                                                             @catch (NSException *exception) {
+                                                                 [GPKGSUtils showMessageWithDelegate:self
+                                                                                            andTitle:[NSString stringWithFormat:@"%@ %@ - %@ Table", [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_DELETE_LABEL], self.table.database, self.table.name]
+                                                                                          andMessage:[NSString stringWithFormat:@"%@", [exception description]]];
+                                                             }
+                                                             @finally {
+                                                                 [geoPackage close];
+                                                             }
+                                                        }];
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_CANCEL_LABEL]
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action) {}];
+    
+    [alert addAction:deleteAction];
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (IBAction)editButtonPressed:(id)sender {
+
 }
 
 /*

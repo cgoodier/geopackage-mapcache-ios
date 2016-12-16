@@ -561,20 +561,8 @@ const char ConstantKey;
         case TAG_TABLE_OPTIONS:
             [self handleTableOptionsWithAlertView:alertView clickedButtonAtIndex:buttonIndex];
             break;
-        case TAG_DATABASE_DELETE:
-            [self handleDeleteDatabaseWithAlertView:alertView clickedButtonAtIndex:buttonIndex];
-            break;
         case TAG_DATABASE_CREATE:
             [self handleCreateWithAlertView:alertView clickedButtonAtIndex:buttonIndex];
-            break;
-        case TAG_DATABASE_RENAME:
-            [self handleRenameDatabaseWithAlertView:alertView clickedButtonAtIndex:buttonIndex];
-            break;
-        case TAG_DATABASE_COPY:
-            [self handleCopyDatabaseWithAlertView:alertView clickedButtonAtIndex:buttonIndex];
-            break;
-        case TAG_TABLE_DELETE:
-            [self handleDeleteTableWithAlertView:alertView clickedButtonAtIndex:buttonIndex];
             break;
         case TAG_CLEAR_ACTIVE:
             [self handleClearActiveWithAlertView:alertView clickedButtonAtIndex:buttonIndex];
@@ -618,21 +606,6 @@ const char ConstantKey;
         
         GPKGSDatabase *database = objc_getAssociatedObject(alertView, &ConstantKey);
         switch (buttonIndex) {
-            case 1:
-                [self viewDatabaseOption:database];
-                break;
-            case 2:
-                [self deleteDatabaseOption:database.name];
-                break;
-            case 3:
-                [self renameDatabaseOption:database.name];
-                break;
-            case 4:
-                [self copyDatabaseOption:database.name];
-                break;
-            case 5:
-                [self shareDatabaseOption:database.name];
-                break;
             case 6:
                 [self createFeaturesDatabaseOption:database];
                 break;
@@ -715,15 +688,6 @@ const char ConstantKey;
                         break;
                 }
                 break;
-            case 2:
-                switch([table getType]){
-                    case GPKGS_TT_FEATURE:
-                    case GPKGS_TT_TILE:
-                    case GPKGS_TT_FEATURE_OVERLAY:
-                        [self deleteTableOption:table];
-                        break;
-                }
-                break;
             case 3:
                 switch([table getType]){
                     case GPKGS_TT_FEATURE:
@@ -773,125 +737,6 @@ const char ConstantKey;
     }
 }
 
--(void) viewDatabaseOption: (GPKGSDatabase *) database{
-    [self performSegueWithIdentifier:GPKGS_MANAGER_SEG_DISPLAY_TEXT sender:database];
-}
-
--(void) deleteDatabaseOption: (NSString *) database{
-    NSString * label = [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_DELETE_LABEL];
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:label
-                          message:[NSString stringWithFormat:@"%@ %@?", label, database]
-                          delegate:self
-                          cancelButtonTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_CANCEL_LABEL]
-                          otherButtonTitles:label,
-                          nil];
-    alert.tag = TAG_DATABASE_DELETE;
-    objc_setAssociatedObject(alert, &ConstantKey, database, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    [alert show];
-}
-
-- (void) handleDeleteDatabaseWithAlertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(buttonIndex > 0){
-        NSString *database = objc_getAssociatedObject(alertView, &ConstantKey);
-        [self.manager delete:database];
-        [self.active removeDatabase:database andPreserveOverlays:false];
-        [self updateAndReloadData];
-    }
-}
-
--(void) renameDatabaseOption: (NSString *) database{
-    UIAlertView * alert = [[UIAlertView alloc]
-                           initWithTitle:[NSString stringWithFormat:@"%@ '%@'", [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_RENAME_LABEL], database]
-                           message:nil
-                           delegate:self
-                           cancelButtonTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_CANCEL_LABEL]
-                           otherButtonTitles:[GPKGSProperties getValueOfProperty:GPKGS_PROP_OK_LABEL],
-                           nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [[alert textFieldAtIndex:0] setText:database];
-    alert.tag = TAG_DATABASE_RENAME;
-    objc_setAssociatedObject(alert, &ConstantKey, database, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    [alert show];
-}
-
-- (void) handleRenameDatabaseWithAlertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(buttonIndex > 0){
-        NSString * newName = [[alertView textFieldAtIndex:0] text];
-        NSString *database = objc_getAssociatedObject(alertView, &ConstantKey);
-        if(newName != nil && [newName length] > 0 && ![newName isEqualToString:database]){
-            @try {
-                if([self.manager rename:database to:newName]){
-                    [self.active renameDatabase:database asNewDatabase:newName];
-                    [self updateAndReloadData];
-                }else{
-                    [GPKGSUtils showMessageWithDelegate:self
-                                               andTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_RENAME_LABEL]
-                                             andMessage:[NSString stringWithFormat:@"Rename from %@ to %@ was not successful", database, newName]];
-                }
-            }
-            @catch (NSException *exception) {
-                [GPKGSUtils showMessageWithDelegate:self
-                                           andTitle:[NSString stringWithFormat:@"Rename %@ to %@", database, newName]
-                                         andMessage:[NSString stringWithFormat:@"%@", [exception description]]];
-            }
-        }
-    }
-}
-
--(void) copyDatabaseOption: (NSString *) database{
-    UIAlertView * alert = [[UIAlertView alloc]
-                           initWithTitle:[NSString stringWithFormat:@"%@ '%@'", [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_COPY_LABEL], database]
-                           message:nil
-                           delegate:self
-                           cancelButtonTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_CANCEL_LABEL]
-                           otherButtonTitles:[GPKGSProperties getValueOfProperty:GPKGS_PROP_OK_LABEL],
-                           nil];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [[alert textFieldAtIndex:0] setText:[NSString stringWithFormat:@"%@%@", database, [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_COPY_SUFFIX]]];
-    alert.tag = TAG_DATABASE_COPY;
-    objc_setAssociatedObject(alert, &ConstantKey, database, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    [alert show];
-}
-
-- (void) handleCopyDatabaseWithAlertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(buttonIndex > 0){
-        NSString * newName = [[alertView textFieldAtIndex:0] text];
-        NSString *database = objc_getAssociatedObject(alertView, &ConstantKey);
-        if(newName != nil && [newName length] > 0 && ![newName isEqualToString:database]){
-            @try {
-                if([self.manager copy:database to:newName]){
-                    [self updateAndReloadData];
-                }else{
-                    [GPKGSUtils showMessageWithDelegate:self
-                                               andTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_COPY_LABEL]
-                                             andMessage:[NSString stringWithFormat:@"Copy from %@ to %@ was not successful", database, newName]];
-                }
-            }
-            @catch (NSException *exception) {
-                [GPKGSUtils showMessageWithDelegate:self
-                                           andTitle:[NSString stringWithFormat:@"Copy %@ to %@", database, newName]
-                                         andMessage:[NSString stringWithFormat:@"%@", [exception description]]];
-            }
-        }
-    }
-}
-
--(void) shareDatabaseOption: (NSString *) database{
-    NSString * path = [self.manager documentsPathForDatabase:database];
-    if(path != nil){
-        NSURL * databaseUrl = [NSURL fileURLWithPath:path];
-
-        self.shareDocumentController = [UIDocumentInteractionController interactionControllerWithURL:databaseUrl];
-        [self.shareDocumentController setUTI:@"public.database"];
-        [self.shareDocumentController presentOpenInMenuFromRect:self.view.bounds inView:self.view animated:YES];
-    }else{
-        [GPKGSUtils showMessageWithDelegate:self
-                                   andTitle:[NSString stringWithFormat:@"Share Database %@", database]
-                                 andMessage:[NSString stringWithFormat:@"No path was found for database %@", database]];
-    }
-}
-
 -(void) createFeaturesDatabaseOption: (GPKGSDatabase *) database
 {
     [self performSegueWithIdentifier:GPKGS_MANAGER_SEG_CREATE_FEATURES sender:database];
@@ -916,53 +761,6 @@ const char ConstantKey;
 
 -(void) editFeatureOverlayTableOption: (GPKGSFeatureOverlayTable *) table{
     [self performSegueWithIdentifier:GPKGS_MANAGER_SEG_EDIT_TILE_OVERLAY sender:table];
-}
-
--(void) deleteTableOption: (GPKGSTable *) table{
-    NSString * label = [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_DELETE_LABEL];
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:label
-                          message:[NSString stringWithFormat:@"%@ %@ - %@?", label, table.database, table.name]
-                          delegate:self
-                          cancelButtonTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_CANCEL_LABEL]
-                          otherButtonTitles:label,
-                          nil];
-    alert.tag = TAG_TABLE_DELETE;
-    objc_setAssociatedObject(alert, &ConstantKey, table, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    [alert show];
-}
-
-- (void) handleDeleteTableWithAlertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(buttonIndex > 0){
-        GPKGSTable *table = objc_getAssociatedObject(alertView, &ConstantKey);
-        
-        switch([table getType]){
-            case GPKGS_TT_FEATURE:
-            case GPKGS_TT_TILE:
-                {
-                    GPKGGeoPackage * geoPackage = [self.manager open:table.database];
-                    @try {
-                        [geoPackage deleteUserTable:table.name];
-                        [self.active removeTable:table];
-                        [self updateAndReloadData];
-                    }
-                    @catch (NSException *exception) {
-                        [GPKGSUtils showMessageWithDelegate:self
-                                                   andTitle:[NSString stringWithFormat:@"%@ %@ - %@ Table", [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_DELETE_LABEL], table.database, table.name]
-                                                 andMessage:[NSString stringWithFormat:@"%@", [exception description]]];
-                    }
-                    @finally {
-                        [geoPackage close];
-                    }
-                }
-                break;
-            case GPKGS_TT_FEATURE_OVERLAY:
-                [self.active removeTable:table];
-                [self updateAndReloadData];
-                break;
-        }
-        
-    }
 }
 
 -(void) indexFeaturesOption: (GPKGSTable *) table{
