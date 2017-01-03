@@ -12,6 +12,10 @@
 #import "GPKGSDecimalValidator.h"
 #import "GPKGSProperties.h"
 #import "GPKGSConstants.h"
+#import "FeatureTableTableViewController.h"
+#import <GPKGGeoPackageFactory.h>
+
+#import <LHSKeyboardAdjusting/UIViewController+LHSKeyboardAdjustment.h>
 
 NSString * const GPKGS_MANAGER_EDIT_FEATURES_SEG_EDIT_CONTENTS = @"editContents";
 
@@ -27,6 +31,10 @@ NSString * const GPKGS_MANAGER_EDIT_FEATURES_SEG_EDIT_CONTENTS = @"editContents"
 @property (weak, nonatomic) IBOutlet UITextField *maxYTextField;
 @property (weak, nonatomic) IBOutlet UITextField *minXTextField;
 @property (weak, nonatomic) IBOutlet UITextField *maxXTextField;
+@property (weak, nonatomic) IBOutlet UITextField *geometryTextField;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) UIPickerView *geometryPicker;
+@property (weak, nonatomic) IBOutlet UILabel *featureTableNameLabel;
 
 @end
 
@@ -37,6 +45,13 @@ NSString * const GPKGS_MANAGER_EDIT_FEATURES_SEG_EDIT_CONTENTS = @"editContents"
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.featureTableNameLabel.text = [NSString stringWithFormat:@"Edit '%@' Table", self.table.name];
+    
+    NSNumber *srsId = self.dao.geometryColumns.srsId;
+    GPKGSpatialReferenceSystem *srs = (GPKGSpatialReferenceSystem *)[[self.table.geoPackage getSpatialReferenceSystemDao] queryForIdObject:srsId];
+    
+    self.projectionLabel.text = [NSString stringWithFormat:@"%@ (%@)", srs.srsName, srs.organizationCoordsysId];
+    
     self.geometryTypes = [GPKGSProperties getArrayOfProperty:GPKGS_PROP_EDIT_FEATURES_GEOMETRY_TYPES];
     
     self.zAndMValidator = [[GPKGSDecimalValidator alloc] initWithMinimumInt:0 andMaximumInt:2];
@@ -45,22 +60,62 @@ NSString * const GPKGS_MANAGER_EDIT_FEATURES_SEG_EDIT_CONTENTS = @"editContents"
     
     UIToolbar *keyboardToolbar = [GPKGSUtils buildKeyboardDoneToolbarWithTarget:self andAction:@selector(doneButtonPressed)];
     
+    UIToolbar *pickerToolbar = [GPKGSUtils buildKeyboardDoneToolbarWithTarget:self andAction:@selector(pickerDoneButtonPressed)];
+    
     self.zTextField.inputAccessoryView = keyboardToolbar;
-    self.zTextField.inputAccessoryView = keyboardToolbar;
+    self.mTextField.inputAccessoryView = keyboardToolbar;
+    
+    self.geometryPicker = [[UIPickerView alloc] init];
+    self.geometryPicker.dataSource = self;
+    self.geometryPicker.delegate = self;
+    self.geometryTextField.inputView = self.geometryPicker;
+    self.geometryTextField.inputAccessoryView = pickerToolbar;
     
     [self setFields];
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self lhs_activateKeyboardAdjustment];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self lhs_deactivateKeyboardAdjustment];
+}
+
+#pragma mark - LHSKeyboardAdjusting
+
+- (BOOL)keyboardAdjustingAnimated {
+    return YES;
+}
+
+- (UIView *)keyboardAdjustingView {
+    return self.scrollView;
+}
+
+- (NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
+    return [self.geometryTypes count];
+}
+
+- (NSInteger) numberOfComponentsInPickerView:(UIPickerView *)pickerView {
+    return 1;
+}
+
+- (NSString *) pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    return [self.geometryTypes objectAtIndex:row];
+}
+
 - (void) doneButtonPressed {
-    [self.zTextField resignFirstResponder];
-    [self.zTextField resignFirstResponder];
+    [self.view endEditing:YES];
 }
 
-- (IBAction)cancelButton:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void) pickerDoneButtonPressed {
+    [self doneButtonPressed];
+    self.geometryTextField.text = [self.geometryTypes objectAtIndex:[self.geometryPicker selectedRowInComponent:0]];
 }
 
-- (IBAction)editButton:(id)sender {
+- (IBAction)saveButton:(id)sender {
     
     GPKGGeoPackage * geoPackage = [self.manager open:self.table.database];
     @try {
@@ -78,7 +133,7 @@ NSString * const GPKGS_MANAGER_EDIT_FEATURES_SEG_EDIT_CONTENTS = @"editContents"
         [contents setLastChange:[NSDate date]];
         [contentsDao update:contents];
         
-        enum WKBGeometryType geometryType = [WKBGeometryTypes fromName:self.geometryTypeButton.titleLabel.text];
+        enum WKBGeometryType geometryType = [WKBGeometryTypes fromName:self.geometryTextField.text];
         [geometryColumns setGeometryType:geometryType];
         
         NSNumber * zNumber = nil;
@@ -109,44 +164,7 @@ NSString * const GPKGS_MANAGER_EDIT_FEATURES_SEG_EDIT_CONTENTS = @"editContents"
     @finally {
         [geoPackage close];
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    switch(alertView.tag){
-            
-        case TAG_GEOMETRY_TYPES:
-            if(buttonIndex >= 0){
-                if(buttonIndex < [self.geometryTypes count]){
-                    NSString * geometryType = (NSString *)[self.geometryTypes objectAtIndex:buttonIndex];
-                    [self.geometryTypeButton setTitle:geometryType forState:UIControlStateNormal];
-                }
-            }
-            
-            break;
-    }
-    
-}
-
-- (IBAction)geometryType:(id)sender {
-    
-    UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_EDIT_FEATURES_GEOMETRY_TYPE_LABEL]
-                          message:nil
-                          delegate:self
-                          cancelButtonTitle:nil
-                          otherButtonTitles:nil];
-    
-    for (NSString *geometryType in self.geometryTypes) {
-        [alert addButtonWithTitle:geometryType];
-    }
-    alert.cancelButtonIndex = [alert addButtonWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_CANCEL_LABEL]];
-    
-    alert.tag = TAG_GEOMETRY_TYPES;
-    
-    [alert show];
-    
+    [self performSegueWithIdentifier:@"unwindToFeatureTable" sender:self];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -156,6 +174,13 @@ NSString * const GPKGS_MANAGER_EDIT_FEATURES_SEG_EDIT_CONTENTS = @"editContents"
         [self setFields];
         GPKGSEditContentsViewController *editContentsViewController = segue.destinationViewController;
         editContentsViewController.data = self.data;
+    }
+    if ([segue.identifier isEqualToString:@"unwindToFeatureTable"]) {
+        FeatureTableTableViewController *vc = segue.destinationViewController;
+        GPKGGeoPackage *gp = [[GPKGGeoPackageFactory getManager] open:self.table.geoPackage.name];
+        [vc setGeoPackage:gp];
+        [vc setDao:[gp getFeatureDaoWithTableName:self.table.name]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GPKGS_IMPORT_GEOPACKAGE_NOTIFICATION object:nil];
     }
 }
 
@@ -168,8 +193,11 @@ NSString * const GPKGS_MANAGER_EDIT_FEATURES_SEG_EDIT_CONTENTS = @"editContents"
         GPKGGeometryColumnsDao * geometryColumnsDao = [geoPackage getGeometryColumnsDao];
         GPKGGeometryColumns * geometryColumns = (GPKGGeometryColumns *)[geometryColumnsDao queryForTableName:self.table.name];
         GPKGContents * contents = [geometryColumnsDao getContents:geometryColumns];
-        
-        [self.data setIdentifier:contents.identifier];
+        if (contents.identifier != nil) {
+            [self.data setIdentifier:contents.identifier];
+        } else {
+            [self.data setIdentifier:self.table.name];
+        }
         [self.data setTheDescription:contents.theDescription];
         [self.data setMinY:contents.minY];
         [self.data setMaxY:contents.maxY];
@@ -177,7 +205,7 @@ NSString * const GPKGS_MANAGER_EDIT_FEATURES_SEG_EDIT_CONTENTS = @"editContents"
         [self.data setMaxX:contents.maxX];
         
         enum WKBGeometryType geometryType = [geometryColumns getGeometryType];
-        [self.geometryTypeButton setTitle:[WKBGeometryTypes name:geometryType] forState:UIControlStateNormal];
+        self.geometryTextField.text =[WKBGeometryTypes name:geometryType];
         [self.zTextField setText:[geometryColumns.z stringValue]];
         [self.mTextField setText:[geometryColumns.m stringValue]];
     }
@@ -214,8 +242,6 @@ NSString * const GPKGS_MANAGER_EDIT_FEATURES_SEG_EDIT_CONTENTS = @"editContents"
     self.maxYTextField.inputAccessoryView = keyboardToolbar;
     self.minXTextField.inputAccessoryView = keyboardToolbar;
     self.maxXTextField.inputAccessoryView = keyboardToolbar;
-
-    
 }
 
 - (IBAction)identifierChanged:(id)sender {

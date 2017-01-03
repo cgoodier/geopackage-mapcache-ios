@@ -6,4 +6,5 @@ inhibit_all_warnings!
 target 'mapcache-ios' do
   pod 'geopackage-ios', '~> 1.2.0'
   pod 'Fingertips', '~> 0.4.0'
+  pod 'LHSKeyboardAdjusting', '~> 2.0'
 end

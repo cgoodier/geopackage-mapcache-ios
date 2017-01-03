@@ -9,6 +9,7 @@
 #import "FeatureHeaderTableViewCell.h"
 #import <GPKGProjectionTransform.h>
 #import <GPKGProjectionConstants.h>
+#import <GPKGContents.h>
 #import <WKBGeometryTypes.h>
 
 @implementation FeatureHeaderTableViewCell
@@ -27,7 +28,13 @@
 - (void) setupCellWithTable: (GPKGSFeatureTable *) table andDao: (GPKGFeatureDao *) dao {
     GPKGProjectionTransform * projectionToWebMercator = [[GPKGProjectionTransform alloc] initWithFromProjection:dao.projection andToEpsg:PROJ_EPSG_WORLD_GEODETIC_SYSTEM];
     
-    self.featureTableNameLabel.text = [NSString stringWithFormat:@"%@", table.name];
+    GPKGGeometryColumnsDao * geometryColumnsDao = [table.geoPackage getGeometryColumnsDao];
+    GPKGContents *contents = [geometryColumnsDao getContents:dao.geometryColumns];
+    if (contents.identifier != nil) {
+        self.featureTableNameLabel.text = [NSString stringWithFormat:@"%@", contents.identifier];
+    } else {
+        self.featureTableNameLabel.text = [NSString stringWithFormat:@"%@", table.name];
+    }
     self.numberOfFeaturesLabel.text = [NSString stringWithFormat:@"%d Features", table.count];
     self.geoPackageNameLabel.text = [NSString stringWithFormat:@"GeoPackage: %@", table.geoPackage.name];
     

@@ -334,10 +334,18 @@ const char ConstantKey;
         cell = [tableView dequeueReusableCellWithIdentifier:GPKGS_CELL_FEATURE_TABLE forIndexPath:indexPath];
         GPKGSTableCell * tableCell = (GPKGSTableCell *) cell;
         GPKGSTable * table = (GPKGSTable *) cellObject;
-        [tableCell.tableName setText:table.name];
+
+        GPKGFeatureDao * featureDao = [table.geoPackage getFeatureDaoWithTableName:table.name];
+
+        GPKGGeometryColumnsDao * geometryColumnsDao = [table.geoPackage getGeometryColumnsDao];
+        GPKGContents *contents = [geometryColumnsDao getContents:featureDao.geometryColumns];
+        if (contents.identifier != nil) {
+            [tableCell.tableName setText:contents.identifier];
+        } else {
+            [tableCell.tableName setText:table.name];
+        }
         [tableCell.count setText:[NSString stringWithFormat:@"(%d)", table.count]];
         [tableCell.active setTable:table];
-        GPKGFeatureDao * featureDao = [table.geoPackage getFeatureDaoWithTableName:table.name];
         tableCell.dao = featureDao;
         tableCell.table = table;
         tableCell.active.on = table.active;
@@ -345,10 +353,19 @@ const char ConstantKey;
         cell = [tableView dequeueReusableCellWithIdentifier:GPKGS_CELL_TILE_TABLE forIndexPath:indexPath];
         GPKGSTableCell * tableCell = (GPKGSTableCell *) cell;
         GPKGSTable * table = (GPKGSTable *) cellObject;
-        [tableCell.tableName setText:table.name];
+        GPKGTileDao *tileDao = [table.geoPackage getTileDaoWithTableName:table.name];
+
+        GPKGTileMatrixSetDao * tileMatrixSetDao = [table.geoPackage getTileMatrixSetDao];
+        GPKGTileMatrixSet * tileMatrixSet = (GPKGTileMatrixSet *)[tileMatrixSetDao queryForIdObject:table.name];
+        GPKGContents * contents = [tileMatrixSetDao getContents:tileMatrixSet];
+        
+        if (contents.identifier != nil) {
+            [tableCell.tableName setText:contents.identifier];
+        } else {
+            [tableCell.tableName setText:table.name];
+        }
         [tableCell.count setText:[NSString stringWithFormat:@"(%d)", table.count]];
         [tableCell.active setTable:table];
-        GPKGTileDao *tileDao = [table.geoPackage getTileDaoWithTableName:table.name];
         tableCell.dao = tileDao;
         tableCell.table = table;
         tableCell.active.on = table.active;

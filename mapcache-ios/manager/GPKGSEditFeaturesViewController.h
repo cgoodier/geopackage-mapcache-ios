@@ -10,6 +10,7 @@
 #import "GPKGSTable.h"
 #import "GPKGGeoPackageManager.h"
 #import "GPKGSEditContentsData.h"
+#import <LHSKeyboardAdjusting/LHSKeyboardAdjusting.h>
 
 @class GPKGSEditFeaturesViewController;
 
@@ -17,14 +18,16 @@
 - (void)editFeaturesViewController:(GPKGSEditFeaturesViewController *)controller editedFeatures:(BOOL)edited withError: (NSString *) error;
 @end
 
-@interface GPKGSEditFeaturesViewController : UIViewController
+@interface GPKGSEditFeaturesViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate, LHSKeyboardAdjusting>
 
 @property (nonatomic, weak) id <GPKGSEditFeaturesDelegate> delegate;
 @property (nonatomic, strong) GPKGGeoPackageManager *manager;
+@property (nonatomic, strong) GPKGFeatureDao *dao;
 @property (nonatomic, strong) GPKGSTable *table;
-@property (weak, nonatomic) IBOutlet UIButton *geometryTypeButton;
 @property (weak, nonatomic) IBOutlet UITextField *zTextField;
 @property (weak, nonatomic) IBOutlet UITextField *mTextField;
 @property (weak, nonatomic) IBOutlet UILabel *projectionLabel;
+
+@property (nonatomic, strong) NSLayoutConstraint *keyboardAdjustingBottomConstraint;
 
 @end

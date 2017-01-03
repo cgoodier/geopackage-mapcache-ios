@@ -48,14 +48,15 @@ static NSInteger const GEOMETRY_COLUMN_SECTION = 3;
 static NSInteger const COLUMNS_SECTION = 4;
 static NSInteger const NUMBER_OF_SECTIONS = 5;
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+-(void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     self.title = @"Feature Table";
     self.featureTable = [self.dao getFeatureTable];
     
     self.collapsedSections = [[NSMutableDictionary alloc] init];
     
     self.dcDao = [self.geoPackage getDataColumnsDao];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -284,9 +285,15 @@ static NSInteger const NUMBER_OF_SECTIONS = 5;
     } else if ([segue.identifier isEqualToString:@"featureTableEditSegue"]) {
         GPKGSEditFeaturesViewController *vc = (GPKGSEditFeaturesViewController *)[segue destinationViewController];
         [vc setManager:[GPKGGeoPackageFactory getManager]];
+        [vc setDao:self.dao];
         [vc setTable:self.table];
         
     }
+}
+
+-(IBAction)unwindToFeatureTable:(UIStoryboardSegue *)segue {
+    //self.geoPackage = [[GPKGGeoPackageFactory getManager] open:self.table.database];
+    //self.dao = [self.geoPackage getFeatureDaoWithTableName:self.table.name];
 }
 
 

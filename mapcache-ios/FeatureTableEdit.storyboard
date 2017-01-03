@@ -44,6 +44,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="identifierChanged:" destination="U0X-ov-vs4" eventType="editingDidEnd" id="ZyS-7A-ueM"/>
+                                                </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cQ0-Ed-KKL">
                                                 <rect key="frame" x="8" y="113" width="359" height="15"/>
@@ -56,6 +59,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="descriptionChanged:" destination="U0X-ov-vs4" eventType="editingDidEnd" id="c8g-5q-Ust"/>
+                                                </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="X and Y are defined in the projection:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1h0-x4-duM">
                                                 <rect key="frame" x="8" y="174" width="359" height="21"/>
@@ -80,6 +86,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="minYChanged:" destination="U0X-ov-vs4" eventType="editingDidEnd" id="dOl-5r-SEz"/>
+                                                </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Y" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bj5-tR-QXp">
                                                 <rect key="frame" x="8" y="293" width="359" height="15"/>
@@ -92,6 +101,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="maxYChanged:" destination="U0X-ov-vs4" eventType="editingDidEnd" id="Llu-cn-F8N"/>
+                                                </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Min X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ca8-Mf-3jo">
                                                 <rect key="frame" x="8" y="354" width="359" height="15"/>
@@ -104,6 +116,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="minXChanged:" destination="U0X-ov-vs4" eventType="editingDidEnd" id="x1w-79-WZh"/>
+                                                </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max X" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JrR-v7-aV8">
                                                 <rect key="frame" x="8" y="415" width="359" height="15"/>
@@ -116,6 +131,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <action selector="maxXChanged:" destination="U0X-ov-vs4" eventType="editingDidEnd" id="64R-cw-MOA"/>
+                                                </connections>
                                             </textField>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Geometry Type" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Oo-cU-LQK">
                                                 <rect key="frame" x="8" y="476" width="359" height="15"/>
@@ -162,7 +180,6 @@
                                             <constraint firstItem="tf2-mG-I8B" firstAttribute="leading" secondItem="Q0b-1k-wvc" secondAttribute="leading" constant="8" id="3J6-Hp-HO8"/>
                                             <constraint firstItem="Bj5-tR-QXp" firstAttribute="leading" secondItem="Q0b-1k-wvc" secondAttribute="leading" constant="8" id="6pE-gb-KYR"/>
                                             <constraint firstItem="1h0-x4-duM" firstAttribute="top" secondItem="Z2I-kg-vPL" secondAttribute="bottom" constant="8" id="7bk-Gm-7Ic"/>
-                                            <constraint firstItem="o1e-HL-OnK" firstAttribute="leading" secondItem="RZe-wz-grf" secondAttribute="trailing" constant="-359" id="809-Vf-Yfu"/>
                                             <constraint firstItem="gzg-O5-ECv" firstAttribute="width" secondItem="Bj5-tR-QXp" secondAttribute="width" id="9e5-6I-UMz"/>
                                             <constraint firstItem="cQ0-Ed-KKL" firstAttribute="top" secondItem="YUV-Mc-pJC" secondAttribute="bottom" constant="8" id="9uZ-gw-je3"/>
                                             <constraint firstItem="RoI-oi-TPU" firstAttribute="leading" secondItem="Q0b-1k-wvc" secondAttribute="leading" constant="8" id="BnH-do-O3V"/>
@@ -241,20 +258,33 @@
                             <constraint firstAttribute="trailing" secondItem="xzl-fg-nM8" secondAttribute="trailing" id="jiE-qY-Vbx"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="cZf-hD-w3J">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="SP4-wq-TRz">
+                            <connections>
+                                <action selector="saveButton:" destination="U0X-ov-vs4" id="CHt-b1-BQB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="descriptionTextField" destination="Z2I-kg-vPL" id="dI6-Sj-Q1f"/>
+                        <outlet property="featureTableNameLabel" destination="RoI-oi-TPU" id="hqg-bM-Jur"/>
+                        <outlet property="geometryTextField" destination="Spw-QG-2iS" id="Xxw-hG-m0z"/>
                         <outlet property="identifierTextField" destination="YUV-Mc-pJC" id="mkI-SB-Lx0"/>
                         <outlet property="mTextField" destination="RZe-wz-grf" id="s9V-0F-UXH"/>
                         <outlet property="maxXTextField" destination="7Br-Pr-y5U" id="5HK-nP-bME"/>
                         <outlet property="maxYTextField" destination="sJ4-6Z-Lsw" id="dhI-Br-wP6"/>
                         <outlet property="minXTextField" destination="fI3-NE-g4z" id="pOd-gx-CU9"/>
                         <outlet property="minYTextField" destination="Uut-rx-gra" id="GGP-uS-zTO"/>
-                        <outlet property="projectionLabel" destination="FKM-Q8-Xun" id="J7e-Xp-2JB"/>
+                        <outlet property="projectionLabel" destination="FKM-Q8-Xun" id="gXD-VQ-QWv"/>
+                        <outlet property="scrollView" destination="xzl-fg-nM8" id="woj-2j-Jky"/>
                         <outlet property="zTextField" destination="1i8-la-miK" id="w6z-eF-94D"/>
+                        <segue destination="TQA-sj-OKo" kind="unwind" identifier="unwindToFeatureTable" unwindAction="unwindToFeatureTable:" id="nSR-te-hJM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VSH-Ks-bYj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="TQA-sj-OKo" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="80.799999999999997" y="220.83958020989508"/>
         </scene>
