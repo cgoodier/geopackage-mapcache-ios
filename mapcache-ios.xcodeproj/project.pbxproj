@@ -87,6 +87,9 @@
 		F7BA2FDD1DF9BD9B00EA5FC7 /* GeoPackageList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7BA2FDC1DF9BD9B00EA5FC7 /* GeoPackageList.storyboard */; };
 		F7BA2FDF1DF9BF7C00EA5FC7 /* LoadGeoPackage.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7BA2FDE1DF9BF7C00EA5FC7 /* LoadGeoPackage.storyboard */; };
 		F7BA2FE11DF9C40C00EA5FC7 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7BA2FE01DF9C40C00EA5FC7 /* Map.storyboard */; };
+		F7E3157A1E1D633A0074A99E /* FeatureIndex.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7E315791E1D633A0074A99E /* FeatureIndex.storyboard */; };
+		F7E3157D1E1D87E50074A99E /* FeatureIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E3157C1E1D87E50074A99E /* FeatureIndexViewController.m */; };
+		F7E315801E1D94CE0074A99E /* CreateFeatureIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E3157F1E1D94CE0074A99E /* CreateFeatureIndexViewController.m */; };
 		F7E8E4D91DDB7B7700CD9BF5 /* Entry.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7E8E4D81DDB7B7700CD9BF5 /* Entry.storyboard */; };
 		F7E8E4E21DDE337600CD9BF5 /* UIButton+GeoPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E8E4E11DDE337600CD9BF5 /* UIButton+GeoPackage.m */; };
 		F7E8E4E51DDFAF5900CD9BF5 /* UITableViewHeaderFooterView+GeoPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E8E4E41DDFAF5900CD9BF5 /* UITableViewHeaderFooterView+GeoPackage.m */; };
@@ -256,6 +259,11 @@
 		F7BA2FDC1DF9BD9B00EA5FC7 /* GeoPackageList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GeoPackageList.storyboard; sourceTree = "<group>"; };
 		F7BA2FDE1DF9BF7C00EA5FC7 /* LoadGeoPackage.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoadGeoPackage.storyboard; sourceTree = "<group>"; };
 		F7BA2FE01DF9C40C00EA5FC7 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
+		F7E315791E1D633A0074A99E /* FeatureIndex.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FeatureIndex.storyboard; sourceTree = "<group>"; };
+		F7E3157B1E1D87E50074A99E /* FeatureIndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureIndexViewController.h; path = features/FeatureIndexViewController.h; sourceTree = "<group>"; };
+		F7E3157C1E1D87E50074A99E /* FeatureIndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeatureIndexViewController.m; path = features/FeatureIndexViewController.m; sourceTree = "<group>"; };
+		F7E3157E1E1D94CE0074A99E /* CreateFeatureIndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateFeatureIndexViewController.h; path = features/CreateFeatureIndexViewController.h; sourceTree = "<group>"; };
+		F7E3157F1E1D94CE0074A99E /* CreateFeatureIndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateFeatureIndexViewController.m; path = features/CreateFeatureIndexViewController.m; sourceTree = "<group>"; };
 		F7E8E4D81DDB7B7700CD9BF5 /* Entry.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Entry.storyboard; sourceTree = "<group>"; };
 		F7E8E4E01DDE337600CD9BF5 /* UIButton+GeoPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+GeoPackage.h"; sourceTree = "<group>"; };
 		F7E8E4E11DDE337600CD9BF5 /* UIButton+GeoPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+GeoPackage.m"; sourceTree = "<group>"; };
@@ -334,6 +342,7 @@
 				F7BA2FDE1DF9BF7C00EA5FC7 /* LoadGeoPackage.storyboard */,
 				F7BA2FE01DF9C40C00EA5FC7 /* Map.storyboard */,
 				F70F0D421E0492A3006EECB5 /* FeatureTableEdit.storyboard */,
+				F7E315791E1D633A0074A99E /* FeatureIndex.storyboard */,
 			);
 			path = "mapcache-ios";
 			sourceTree = "<group>";
@@ -560,6 +569,10 @@
 				F70F0D401E046E95006EECB5 /* FeatureHeaderTableViewCell.m */,
 				F70F0D441E049367006EECB5 /* FeatureTableEditViewController.h */,
 				F70F0D451E049367006EECB5 /* FeatureTableEditViewController.m */,
+				F7E3157B1E1D87E50074A99E /* FeatureIndexViewController.h */,
+				F7E3157C1E1D87E50074A99E /* FeatureIndexViewController.m */,
+				F7E3157E1E1D94CE0074A99E /* CreateFeatureIndexViewController.h */,
+				F7E3157F1E1D94CE0074A99E /* CreateFeatureIndexViewController.m */,
 			);
 			name = features;
 			sourceTree = "<group>";
@@ -686,6 +699,7 @@
 				F79C28B71DF0848400CF86B6 /* FeatureTable.storyboard in Resources */,
 				040136861AF94FB200C92AFC /* LaunchScreen.xib in Resources */,
 				040136831AF94FB200C92AFC /* Images.xcassets in Resources */,
+				F7E3157A1E1D633A0074A99E /* FeatureIndex.storyboard in Resources */,
 				F79C28AE1DE60F1E00CF86B6 /* InfoStoryboard.storyboard in Resources */,
 				F7BA2FDB1DF86C0700EA5FC7 /* SrsTable.storyboard in Resources */,
 				F7BA2FE11DF9C40C00EA5FC7 /* Map.storyboard in Resources */,
@@ -798,6 +812,7 @@
 				04E1D8D01B66D366002BD947 /* GPKGSEditContentsViewController.m in Sources */,
 				044648021B4AF4250052913B /* GPKGSTableTypes.m in Sources */,
 				045C948D1B50789D0005CCD0 /* GPKGSMapView.m in Sources */,
+				F7E315801E1D94CE0074A99E /* CreateFeatureIndexViewController.m in Sources */,
 				045C949B1B5D4C560005CCD0 /* GPKGSDecimalValidator.m in Sources */,
 				04CCC86B1B6121E90001296D /* GPKGSLoadTilesViewController.m in Sources */,
 				F7A037E31DE4A95B00DD8BE2 /* LoadGeoPackageViewController.m in Sources */,
@@ -811,6 +826,7 @@
 				04E1D8D31B66D41E002BD947 /* GPKGSEditFeaturesViewController.m in Sources */,
 				04E0EE051B69112B0095E53E /* GPKGSAddTileOverlayViewController.m in Sources */,
 				045C94861B50226D0005CCD0 /* GPKGSFeatureOverlayTable.m in Sources */,
+				F7E3157D1E1D87E50074A99E /* FeatureIndexViewController.m in Sources */,
 				04082B561B4F18A000D65E6B /* GPKGSUtils.m in Sources */,
 				F79C28B51DE61F1D00CF86B6 /* GeneralInfoTableViewCell.m in Sources */,
 				04CCC8741B61228D0001296D /* GPKGSCreateTilesData.m in Sources */,

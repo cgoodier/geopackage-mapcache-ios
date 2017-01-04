@@ -385,7 +385,7 @@
 	<key>geopackage_table_delete_label</key>
 	<string>Delete</string>
 	<key>geopackage_table_index_features_label</key>
-	<string>Feature Index</string>
+	<string>Index Features</string>
 	<key>geopackage_table_index_features_index_title</key>
 	<string>Index</string>
 	<key>geopackage_table_index_features_index_geopackage_label</key>
@@ -405,13 +405,13 @@
 	<key>geopackage_table_index_features_index_delete_metadata_label</key>
 	<string>from App Metadata?</string>
 	<key>geopackage_table_create_feature_tiles_label</key>
-	<string>Create Tiles</string>
+	<string>Create Tile Layer From Features</string>
 	<key>geopackage_table_add_feature_overlay_label</key>
-	<string>Add Tile Overlay</string>
+	<string>Define Feature Styles</string>
 	<key>geopackage_table_tiles_load_label</key>
 	<string>Load Tiles</string>
 	<key>geopackage_table_linked_tables_label</key>
-	<string>Linked Tables</string>
+	<string>Manage Linked Tables</string>
 	<key>edit_features_info_label</key>
 	<string>Info</string>
 	<key>edit_features_edit_label</key>

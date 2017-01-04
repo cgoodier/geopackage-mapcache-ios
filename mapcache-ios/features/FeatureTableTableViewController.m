@@ -23,6 +23,7 @@
 #import "GPKGSUtils.h"
 #import <GPKGGeoPackageFactory.h>
 #import "GPKGSDatabases.h"
+#import "CreateFeatureIndexViewController.h"
 
 @interface FeatureTableTableViewController ()
 
@@ -36,6 +37,7 @@
 @property (weak, nonatomic) GPKGFeatureTable *featureTable;
 @property (strong, nonatomic) NSMutableDictionary *collapsedSections;
 @property (strong, nonatomic) GPKGDataColumnsDao *dcDao;
+@property (strong, nonatomic) NSString *tableIdentifier;
 
 @end
 
@@ -56,6 +58,14 @@ static NSInteger const NUMBER_OF_SECTIONS = 5;
     self.collapsedSections = [[NSMutableDictionary alloc] init];
     
     self.dcDao = [self.geoPackage getDataColumnsDao];
+    GPKGGeometryColumnsDao * geometryColumnsDao = [self.table.geoPackage getGeometryColumnsDao];
+    GPKGContents *contents = [geometryColumnsDao getContents:self.dao.geometryColumns];
+    if (contents.identifier != nil) {
+        self.tableIdentifier = [NSString stringWithFormat:@"%@", contents.identifier];
+    } else {
+        self.tableIdentifier = [NSString stringWithFormat:@"%@", self.table.name];
+    }
+    
     [self.tableView reloadData];
 }
 
@@ -194,10 +204,6 @@ static NSInteger const NUMBER_OF_SECTIONS = 5;
     return UITableViewAutomaticDimension;
 }
 
-- (IBAction)settingsButtonPressed:(id)sender {
-
-}
-
 - (IBAction)deleteButtonPressed:(id)sender {
     NSString * label = [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_DELETE_LABEL];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:label
@@ -235,9 +241,37 @@ static NSInteger const NUMBER_OF_SECTIONS = 5;
     }
 
 }
-
-- (IBAction)editButtonPressed:(id)sender {
-
+- (IBAction)actionButtonPressed:(id)sender {
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"Actions for table %@", self.tableIdentifier] message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_CANCEL_LABEL]
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action) {}];
+    
+    UIAlertAction* indexFeaturesAction = [UIAlertAction actionWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_INDEX_FEATURES_LABEL] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self performSegueWithIdentifier:@"featureIndexSegue" sender:self];
+    }];
+    
+    UIAlertAction* createFeatureTilesAction = [UIAlertAction actionWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_CREATE_FEATURE_TILES_LABEL] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    UIAlertAction* featureOverlayAction = [UIAlertAction actionWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_ADD_FEATURE_OVERLAY_LABEL] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    UIAlertAction* linkedTablesAction = [UIAlertAction actionWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_LINKED_TABLES_LABEL] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+    
+    [actionSheet addAction:indexFeaturesAction];
+    [actionSheet addAction:createFeatureTilesAction];
+    [actionSheet addAction:featureOverlayAction];
+    [actionSheet addAction:linkedTablesAction];
+    [actionSheet addAction:cancelAction];
+    
+    [self presentViewController:actionSheet animated:YES completion:nil];
 }
 
 /*
@@ -287,13 +321,15 @@ static NSInteger const NUMBER_OF_SECTIONS = 5;
         [vc setManager:[GPKGGeoPackageFactory getManager]];
         [vc setDao:self.dao];
         [vc setTable:self.table];
-        
+    } else if ([segue.identifier isEqualToString:@"featureIndexSegue"]) {
+        CreateFeatureIndexViewController *vc = (CreateFeatureIndexViewController *)[segue destinationViewController];
+        [vc setTable:self.table];
+        [vc setManager:[GPKGGeoPackageFactory getManager]];
+        [vc setDao:self.dao];
     }
 }
 
 -(IBAction)unwindToFeatureTable:(UIStoryboardSegue *)segue {
-    //self.geoPackage = [[GPKGGeoPackageFactory getManager] open:self.table.database];
-    //self.dao = [self.geoPackage getFeatureDaoWithTableName:self.table.name];
 }
 
 

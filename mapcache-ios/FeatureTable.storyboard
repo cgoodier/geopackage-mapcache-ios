@@ -91,7 +91,7 @@
                                                         <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="CDb-Om-1gL"/>
                                                         <barButtonItem image="settings" id="X01-DS-k0s">
                                                             <connections>
-                                                                <action selector="settingsButtonPressed:" destination="fSp-CT-qwF" id="YF1-PG-zAm"/>
+                                                                <action selector="actionButtonPressed:" destination="fSp-CT-qwF" id="ihV-7E-5ki"/>
                                                             </connections>
                                                         </barButtonItem>
                                                     </items>
@@ -343,6 +343,9 @@
                         </connections>
                     </tableView>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <connections>
+                        <segue destination="gFC-T2-xhZ" kind="show" identifier="featureIndexSegue" id="ogV-5g-dOg"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hQf-fm-uDR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -363,6 +366,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aNY-eI-AWn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="748" y="142"/>
+        </scene>
+        <!--FeatureIndex-->
+        <scene sceneID="zgV-YB-V7e">
+            <objects>
+                <viewControllerPlaceholder storyboardName="FeatureIndex" id="gFC-T2-xhZ" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZPA-rX-Rfn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="835" y="250"/>
         </scene>
     </scenes>
     <resources>
