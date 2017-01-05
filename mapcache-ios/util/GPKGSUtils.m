@@ -54,8 +54,7 @@
 
 +(UIProgressView *) buildProgressBarView{
     UIProgressView *progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-    progressView.frame = CGRectMake(0, 0, 200, 15);
-    progressView.bounds = CGRectMake(0, 0, 200, 15);
+    progressView.translatesAutoresizingMaskIntoConstraints = NO;
     [progressView setUserInteractionEnabled:NO];
     [progressView setProgressTintColor:[UIColor greenColor]];
     return progressView;

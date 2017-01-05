@@ -27,7 +27,7 @@
 @property (nonatomic, strong) NSObject<GPKGSLoadTilesProtocol> *callback;
 @property (nonatomic) BOOL canceled;
 @property (nonatomic, strong) NSString *error;
-@property (nonatomic, strong) UIAlertView *alertView;
+@property (nonatomic, strong) UIAlertController *alertView;
 @property (nonatomic, strong) UIProgressView *progressView;
 
 @end
@@ -129,19 +129,53 @@
     
     [loadTilesTask setTileGenerator:tileGenerator];
     
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@ %@ - %@", label, geoPackage.name, tableName]
+                                                                   message:@""
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_STOP_LABEL]
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action) {
+                                                             [loadTilesTask setCanceled:YES];
+                                                         }];
+    
+    UIProgressView *progressView = [GPKGSUtils buildProgressBarView];
+    [alert.view addSubview:progressView];
+    //[alert setValue:progressView forKey:@"accessoryView"];
+    
+    [alert addAction:cancelAction];
+    
+    loadTilesTask.alertView = alert;
+    loadTilesTask.progressView = progressView;
+    
+    id rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+    if([rootViewController isKindOfClass:[UINavigationController class]]) {
+        rootViewController = ((UINavigationController *)rootViewController).viewControllers.firstObject;
+    }
+    if([rootViewController isKindOfClass:[UITabBarController class]]) {
+        rootViewController = ((UITabBarController *)rootViewController).selectedViewController;
+    }
+    [rootViewController presentViewController:alert animated:YES completion:nil];
+    
+    /*
     UIAlertView *alertView = [[UIAlertView alloc]
                               initWithTitle:[NSString stringWithFormat:@"%@ %@ - %@", label, geoPackage.name, tableName]
                               message:@""
                               delegate:loadTilesTask
                               cancelButtonTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_STOP_LABEL]
                               otherButtonTitles:nil];
-    UIProgressView *progressView = [GPKGSUtils buildProgressBarView];
+    
+    
+    
+    UIProgressView *progressView = [GPKGSUtils buildProgressBarViewForAlert:alertView];
     [alertView setValue:progressView forKey:@"accessoryView"];
     
     loadTilesTask.alertView = alertView;
     loadTilesTask.progressView = progressView;
     
     [alertView show];
+     */
     
     [loadTilesTask execute];
     
@@ -188,7 +222,8 @@
         }
         
         dispatch_sync(dispatch_get_main_queue(), ^{
-            [self.alertView dismissWithClickedButtonIndex:-1 animated:true];
+            [self.alertView dismissViewControllerAnimated:YES completion:nil];
+            //[self.alertView dismissWithClickedButtonIndex:-1 animated:true];
             
             if(self.error == nil){
                 [self.callback onLoadTilesCompleted:count];

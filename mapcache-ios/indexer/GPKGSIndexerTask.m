@@ -24,7 +24,7 @@
 @property (nonatomic, strong) NSObject<GPKGSIndexerProtocol> *callback;
 @property (nonatomic) BOOL canceled;
 @property (nonatomic, strong) NSString *error;
-@property (nonatomic, strong) UIAlertView *alertView;
+@property (nonatomic, strong) UIAlertController *alertView;
 @property (nonatomic, strong) UIProgressView *progressView;
 
 @end
@@ -56,19 +56,38 @@
     [indexTask setMax:max];
     [indexer setProgress:indexTask];
     
-    UIAlertView *alertView = [[UIAlertView alloc]
-                              initWithTitle:[NSString stringWithFormat:@"%@ %@ - %@", [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_INDEX_FEATURES_INDEX_TITLE], database, tableName]
-                              message:@""
-                              delegate:indexTask
-                              cancelButtonTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_CANCEL_LABEL]
-                              otherButtonTitles:nil];
-    UIProgressView *progressView = [GPKGSUtils buildProgressBarView];
-    [alertView setValue:progressView forKey:@"accessoryView"];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@ %@ - %@", [GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_INDEX_FEATURES_INDEX_TITLE], database, tableName]
+                                                                   message:@""
+                                                            preferredStyle:UIAlertControllerStyleAlert];
     
-    indexTask.alertView = alertView;
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_CANCEL_LABEL]
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action) {
+                                                             [indexTask setCanceled:YES];
+                                                         }];
+    
+    UIProgressView *progressView = [GPKGSUtils buildProgressBarView];
+    [alert.view addSubview:progressView];
+    
+    NSLayoutConstraint *topConstraint = [NSLayoutConstraint constraintWithItem:progressView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:alert.view attribute:NSLayoutAttributeTop multiplier:1 constant:78];
+    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:progressView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:alert.view attribute:NSLayoutAttributeLeading multiplier:1 constant:0];
+    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:alert.view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:progressView attribute:NSLayoutAttributeTrailing multiplier:1 constant:0];
+    [alert.view addConstraints:@[topConstraint, leftConstraint, rightConstraint]];
+    
+    [alert addAction:cancelAction];
+    
+    indexTask.alertView = alert;
     indexTask.progressView = progressView;
     
-    [alertView show];
+    id rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+    if([rootViewController isKindOfClass:[UINavigationController class]]) {
+        rootViewController = ((UINavigationController *)rootViewController).viewControllers.firstObject;
+    }
+    if([rootViewController isKindOfClass:[UITabBarController class]]) {
+        rootViewController = ((UITabBarController *)rootViewController).selectedViewController;
+    }
+    [rootViewController presentViewController:alert animated:YES completion:nil];
     
     [indexTask execute];
 }
@@ -85,12 +104,6 @@
         self.canceled = false;
     }
     return self;
-}
-
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if(buttonIndex == 0){
-        self.canceled = true;
-    }
 }
 
 -(void) execute{
@@ -118,7 +131,7 @@
         }
         
         dispatch_sync(dispatch_get_main_queue(), ^{
-            [self.alertView dismissWithClickedButtonIndex:-1 animated:true];
+            [self.alertView dismissViewControllerAnimated:YES completion:nil];
 
             if(self.error == nil){
                 [self.callback onIndexerCompleted:count];
