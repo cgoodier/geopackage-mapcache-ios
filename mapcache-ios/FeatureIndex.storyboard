@@ -28,26 +28,27 @@
                                 <color key="textColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feature Indexes can be created in two ways:" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pya-7r-Ami">
-                                <rect key="frame" x="16" y="56.5" width="343" height="16"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TfI-Hu-uPM">
+                                <rect key="frame" x="16" y="52" width="343" height="62.5"/>
+                                <string key="text">Indexing feature table geometries by their bounding envelopes allows for fast query and retrieval of geometries that overlap a desired envelope bounds. Feature Indexes can be created in two ways:</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GeoPackage Index" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eoi-mw-jPL">
-                                <rect key="frame" x="16" y="107.5" width="343" height="20.5"/>
+                                <rect key="frame" x="16" y="130.5" width="343" height="20.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Features are indexed within the GeoPackage according to the extension specified here:" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5lE-Wi-4A1">
-                                <rect key="frame" x="16" y="136" width="343" height="31.5"/>
+                                <rect key="frame" x="16" y="159" width="343" height="31.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="http://ngageoint.github.io/GeoPackage/docs/extensions/geometry-index.html" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="G3c-9x-eA7">
-                                <rect key="frame" x="16" y="169.5" width="343" height="49.5"/>
+                                <rect key="frame" x="16" y="192" width="343" height="49.5"/>
                                 <color key="tintColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -55,46 +56,20 @@
                                 <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Metadata Index" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oye-kJ-HfR">
-                                <rect key="frame" x="16" y="299.5" width="343" height="20.5"/>
+                                <rect key="frame" x="16" y="378" width="343" height="20.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7WC-Cu-0jA">
-                                <rect key="frame" x="16" y="328" width="343" height="47"/>
+                                <rect key="frame" x="16" y="406.5" width="343" height="47"/>
                                 <string key="text">Features are indexed in a separate database accessible only by this app.  This can be used to index the features without modifying the original GeoPackage.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="WuC-K7-hP1">
-                                <rect key="frame" x="16" y="383" width="343" height="50.5"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SW4-24-hER">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="30"/>
-                                        <color key="backgroundColor" red="0.49019607900000001" green="0.74509805439999999" blue="0.8156862855" alpha="1" colorSpace="calibratedRGB"/>
-                                        <state key="normal" title="Create Metadata Index">
-                                            <color key="titleColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="cancel:" destination="mNz-bO-aJI" eventType="touchUpInside" id="AwD-Id-UMR"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Metadata Index Created" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FX7-ge-lrL">
-                                        <rect key="frame" x="0.0" y="30" width="343" height="20.5"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="1" blue="0.031326614119999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tOf-qh-IT6">
-                                <rect key="frame" x="16" y="227" width="343" height="50.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="tOf-qh-IT6">
+                                <rect key="frame" x="16" y="249.5" width="343" height="96.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CoH-ND-jwr">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="30"/>
@@ -108,31 +83,86 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="cancel:" destination="mNz-bO-aJI" eventType="touchUpInside" id="Rmg-Kb-Rt0"/>
+                                            <action selector="createGeoPackageIndex:" destination="mNz-bO-aJI" eventType="touchUpInside" id="s1h-r6-Qod"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GeoPackage Index Created" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2LO-fH-hPL">
-                                        <rect key="frame" x="0.0" y="30" width="343" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="38" width="343" height="20.5"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="1" blue="0.031326614117045626" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="54T-Nb-z7q">
+                                        <rect key="frame" x="0.0" y="66.5" width="343" height="30"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="Delete GeoPackage Index">
+                                            <color key="titleColor" red="1" green="0.0" blue="0.019891490399700729" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="deleteGeoPackageIndex:" destination="mNz-bO-aJI" eventType="touchUpInside" id="HXe-bk-hgX"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="WuC-K7-hP1">
+                                <rect key="frame" x="16" y="467" width="343" height="96.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SW4-24-hER">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="30"/>
+                                        <color key="backgroundColor" red="0.49019607900000001" green="0.74509805439999999" blue="0.8156862855" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal" title="Create Metadata Index">
+                                            <color key="titleColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="createMetadataIndex:" destination="mNz-bO-aJI" eventType="touchUpInside" id="6b2-4p-ed6"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Metadata Index Created" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FX7-ge-lrL">
+                                        <rect key="frame" x="0.0" y="38" width="343" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="1" blue="0.031326614119999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cZN-aD-lcM">
+                                        <rect key="frame" x="0.0" y="66.5" width="343" height="30"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="Delete Metadata Index">
+                                            <color key="titleColor" red="1" green="0.0" blue="0.0198914904" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="deleteMetadataIndex:" destination="mNz-bO-aJI" eventType="touchUpInside" id="Pvx-zc-7Gk"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.18431372939999999" green="0.2392156869" blue="0.2941176593" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="pya-7r-Ami" secondAttribute="trailing" id="1U2-h8-SmC"/>
                             <constraint firstItem="OQi-ub-7yZ" firstAttribute="top" secondItem="pqX-BH-tgU" secondAttribute="bottom" constant="8" id="2lK-rk-a85"/>
+                            <constraint firstItem="Eoi-mw-jPL" firstAttribute="top" secondItem="TfI-Hu-uPM" secondAttribute="bottom" constant="16" id="35w-hW-4B0"/>
                             <constraint firstItem="G3c-9x-eA7" firstAttribute="top" secondItem="5lE-Wi-4A1" secondAttribute="bottom" constant="1.5" id="5fA-OG-nMT"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="pya-7r-Ami" secondAttribute="leading" id="5rF-eu-blN"/>
-                            <constraint firstItem="pya-7r-Ami" firstAttribute="top" secondItem="OQi-ub-7yZ" secondAttribute="bottom" constant="8" id="9wJ-6w-GQS"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Eoi-mw-jPL" secondAttribute="leading" id="ApG-9p-e26"/>
                             <constraint firstAttribute="trailingMargin" secondItem="G3c-9x-eA7" secondAttribute="trailing" id="BKO-7O-hlf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Eoi-mw-jPL" secondAttribute="trailing" id="BWv-aA-Kdc"/>
-                            <constraint firstItem="Eoi-mw-jPL" firstAttribute="top" secondItem="pya-7r-Ami" secondAttribute="bottom" constant="35" id="BcE-bZ-AzJ"/>
                             <constraint firstItem="7WC-Cu-0jA" firstAttribute="top" secondItem="Oye-kJ-HfR" secondAttribute="bottom" constant="8" id="EJB-Ny-3vN"/>
-                            <constraint firstItem="Oye-kJ-HfR" firstAttribute="top" secondItem="tOf-qh-IT6" secondAttribute="bottom" constant="21.5" id="ITU-x6-h9u"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="TfI-Hu-uPM" secondAttribute="leading" id="Gc2-H1-yn9"/>
+                            <constraint firstItem="Oye-kJ-HfR" firstAttribute="top" secondItem="tOf-qh-IT6" secondAttribute="bottom" constant="32" id="ITU-x6-h9u"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="TfI-Hu-uPM" secondAttribute="trailing" id="JM6-Kb-kQG"/>
                             <constraint firstItem="WuC-K7-hP1" firstAttribute="leading" secondItem="gS6-18-mxM" secondAttribute="leadingMargin" id="P9c-tr-wsX"/>
                             <constraint firstAttribute="trailingMargin" secondItem="tOf-qh-IT6" secondAttribute="trailing" id="Psg-Ud-IOx"/>
                             <constraint firstItem="tOf-qh-IT6" firstAttribute="top" secondItem="G3c-9x-eA7" secondAttribute="bottom" constant="8" id="QXb-th-GZu"/>
@@ -142,9 +172,10 @@
                             <constraint firstAttribute="trailingMargin" secondItem="OQi-ub-7yZ" secondAttribute="trailing" id="ZoX-Yo-Brf"/>
                             <constraint firstAttribute="trailingMargin" secondItem="7WC-Cu-0jA" secondAttribute="trailing" id="clJ-ld-z63"/>
                             <constraint firstAttribute="leadingMargin" secondItem="OQi-ub-7yZ" secondAttribute="leading" id="dOl-of-YHD"/>
-                            <constraint firstItem="WuC-K7-hP1" firstAttribute="top" secondItem="7WC-Cu-0jA" secondAttribute="bottom" constant="8" id="hNH-tQ-neK"/>
+                            <constraint firstItem="WuC-K7-hP1" firstAttribute="top" secondItem="7WC-Cu-0jA" secondAttribute="bottom" constant="14" id="hNH-tQ-neK"/>
                             <constraint firstAttribute="trailingMargin" secondItem="WuC-K7-hP1" secondAttribute="trailing" id="iFp-YP-iMd"/>
                             <constraint firstAttribute="leadingMargin" secondItem="G3c-9x-eA7" secondAttribute="leading" id="nXd-PG-YRy"/>
+                            <constraint firstItem="TfI-Hu-uPM" firstAttribute="top" secondItem="OQi-ub-7yZ" secondAttribute="bottom" constant="3.5" id="qcb-nx-F88"/>
                             <constraint firstAttribute="leadingMargin" secondItem="7WC-Cu-0jA" secondAttribute="leading" id="uv6-2K-CpG"/>
                             <constraint firstItem="tOf-qh-IT6" firstAttribute="leading" secondItem="gS6-18-mxM" secondAttribute="leadingMargin" id="v33-5u-qpv"/>
                             <constraint firstAttribute="trailingMargin" secondItem="5lE-Wi-4A1" secondAttribute="trailing" id="y0a-Rx-iNz"/>
@@ -156,6 +187,8 @@
                         <outlet property="createGeoPackageIndexButton" destination="CoH-ND-jwr" id="9mA-M7-1zc"/>
                         <outlet property="createLabel" destination="OQi-ub-7yZ" id="z0t-af-NVq"/>
                         <outlet property="createMetadataIndexButton" destination="SW4-24-hER" id="ilG-6H-SJF"/>
+                        <outlet property="deleteGeoPackageIndexButton" destination="54T-Nb-z7q" id="Arc-MZ-VL6"/>
+                        <outlet property="deleteMetadataIndexButton" destination="cZN-aD-lcM" id="H1e-oq-Z3D"/>
                         <outlet property="geoPackageIndexCreatedLabel" destination="2LO-fH-hPL" id="Dcc-fg-G06"/>
                         <outlet property="metadataIndexCreatedLabel" destination="FX7-ge-lrL" id="tsy-Tc-weD"/>
                     </connections>

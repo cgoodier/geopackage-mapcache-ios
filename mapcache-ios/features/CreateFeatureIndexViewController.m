@@ -8,14 +8,17 @@
 
 #import "CreateFeatureIndexViewController.h"
 #import <GPKGFeatureIndexManager.h>
+#import "GPKGSIndexerTask.h"
 
 @interface CreateFeatureIndexViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *createLabel;
 @property (weak, nonatomic) IBOutlet UIButton *createGeoPackageIndexButton;
+@property (weak, nonatomic) IBOutlet UIButton *deleteGeoPackageIndexButton;
 @property (weak, nonatomic) IBOutlet UILabel *geoPackageIndexCreatedLabel;
 @property (weak, nonatomic) IBOutlet UIButton *createMetadataIndexButton;
 @property (weak, nonatomic) IBOutlet UILabel *metadataIndexCreatedLabel;
+@property (weak, nonatomic) IBOutlet UIButton *deleteMetadataIndexButton;
 
 @end
 
@@ -24,6 +27,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self updateView];
+    
+    self.createLabel.text = [NSString stringWithFormat:@"Create Feature Index for Table '%@'", self.table.name];
+}
+
+- (void) updateView {
     BOOL geoPackageIndexed = false;
     BOOL metadataIndexed = false;
     GPKGGeoPackage * geoPackage = [self.manager open:self.table.database];
@@ -35,33 +44,64 @@
         metadataIndexed = [indexer isIndexedWithFeatureIndexType:GPKG_FIT_METADATA];
         if (!geoPackageIndexed) {
             [self.geoPackageIndexCreatedLabel setHidden:YES];
+            [self.deleteGeoPackageIndexButton setHidden:YES];
             [self.createGeoPackageIndexButton setHidden:NO];
         } else {
             [self.geoPackageIndexCreatedLabel setHidden:NO];
+            [self.deleteGeoPackageIndexButton setHidden:NO];
             [self.createGeoPackageIndexButton setHidden:YES];
         }
         
         if (!metadataIndexed) {
             [self.metadataIndexCreatedLabel setHidden:YES];
+            [self.deleteMetadataIndexButton setHidden:YES];
             [self.createMetadataIndexButton setHidden:NO];
         } else {
             [self.metadataIndexCreatedLabel setHidden:NO];
+            [self.deleteMetadataIndexButton setHidden:NO];
             [self.createMetadataIndexButton setHidden:YES];
         }
     }
     @finally {
         [geoPackage close];
     }
-    
-    
-    self.createLabel.text = [NSString stringWithFormat:@"Create Feature Index for Table '%@'", self.table.name];
-    // Do any additional setup after loading the view.
+
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (IBAction)createGeoPackageIndex:(id)sender {
+    [GPKGSIndexerTask indexFeaturesWithCallback:self andDatabase:self.table.database andTable:self.table.name andFeatureIndexType:GPKG_FIT_GEOPACKAGE];
 }
+
+- (IBAction)deleteGeoPackageIndex:(id)sender {
+    GPKGFeatureIndexManager * indexer = [[GPKGFeatureIndexManager alloc] initWithGeoPackage:self.table.geoPackage andFeatureDao:self.dao];
+    [indexer setIndexLocation:GPKG_FIT_GEOPACKAGE];
+    [indexer deleteIndex];
+    [self updateView];
+}
+
+- (IBAction)createMetadataIndex:(id)sender {
+    [GPKGSIndexerTask indexFeaturesWithCallback:self andDatabase:self.table.database andTable:self.table.name andFeatureIndexType:GPKG_FIT_METADATA];
+}
+
+- (IBAction)deleteMetadataIndex:(id)sender {
+    GPKGFeatureIndexManager * indexer = [[GPKGFeatureIndexManager alloc] initWithGeoPackage:self.table.geoPackage andFeatureDao:self.dao];
+    [indexer setIndexLocation:GPKG_FIT_METADATA];
+    [indexer deleteIndex];
+    [self updateView];
+}
+
+-(void) onIndexerCanceled: (NSString *) result{
+    
+}
+
+-(void) onIndexerFailure: (NSString *) result{
+    
+}
+
+-(void) onIndexerCompleted: (int) count{
+    [self updateView];
+}
+
 
 /*
 #pragma mark - Navigation

@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "GPKGSTable.h"
+#import "GPKGSIndexerProtocol.h"
 #import <GPKGGeoPackageManager.h>
 
-@interface CreateFeatureIndexViewController : UIViewController
+@interface CreateFeatureIndexViewController : UIViewController <GPKGSIndexerProtocol>
 
 @property (nonatomic, strong) GPKGGeoPackageManager *manager;
 @property (nonatomic, strong) GPKGFeatureDao *dao;
