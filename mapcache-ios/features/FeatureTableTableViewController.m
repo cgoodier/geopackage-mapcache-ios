@@ -24,6 +24,7 @@
 #import <GPKGGeoPackageFactory.h>
 #import "GPKGSDatabases.h"
 #import "CreateFeatureIndexViewController.h"
+#import "CreateTilesViewController.h"
 
 @interface FeatureTableTableViewController ()
 
@@ -253,7 +254,7 @@ static NSInteger const NUMBER_OF_SECTIONS = 5;
     }];
     
     UIAlertAction* createFeatureTilesAction = [UIAlertAction actionWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_CREATE_FEATURE_TILES_LABEL] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
+        [self performSegueWithIdentifier:@"createTileLayerSegue" sender:self];
     }];
     
     UIAlertAction* featureOverlayAction = [UIAlertAction actionWithTitle:[GPKGSProperties getValueOfProperty:GPKGS_PROP_GEOPACKAGE_TABLE_ADD_FEATURE_OVERLAY_LABEL] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -326,6 +327,9 @@ static NSInteger const NUMBER_OF_SECTIONS = 5;
         [vc setTable:self.table];
         [vc setManager:[GPKGGeoPackageFactory getManager]];
         [vc setDao:self.dao];
+    } else if ([segue.identifier isEqualToString:@"createTileLayerSegue"]) {
+        CreateTilesViewController *vc = (CreateTilesViewController *)[segue destinationViewController];
+        
     }
 }
 

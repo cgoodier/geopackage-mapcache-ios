@@ -345,11 +345,20 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <segue destination="gFC-T2-xhZ" kind="show" identifier="featureIndexSegue" id="ogV-5g-dOg"/>
+                        <segue destination="2oR-xF-KjH" kind="presentation" identifier="createTileLayerSegue" animates="NO" id="wzO-31-VKf"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hQf-fm-uDR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="47.200000000000003" y="142.57871064467767"/>
+        </scene>
+        <!--CreateTileLayer-->
+        <scene sceneID="zRY-ro-Pyq">
+            <objects>
+                <viewControllerPlaceholder storyboardName="CreateTileLayer" id="2oR-xF-KjH" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Pp-fI-oCV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="822" y="339"/>
         </scene>
         <!--FeatureTableEdit-->
         <scene sceneID="uVl-yL-bbZ">

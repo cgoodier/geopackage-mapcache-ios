@@ -90,6 +90,12 @@
 		F7E3157A1E1D633A0074A99E /* FeatureIndex.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7E315791E1D633A0074A99E /* FeatureIndex.storyboard */; };
 		F7E3157D1E1D87E50074A99E /* FeatureIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E3157C1E1D87E50074A99E /* FeatureIndexViewController.m */; };
 		F7E315801E1D94CE0074A99E /* CreateFeatureIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E3157F1E1D94CE0074A99E /* CreateFeatureIndexViewController.m */; };
+		F7E315821E1EF8D60074A99E /* CreateTileLayer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7E315811E1EF8D60074A99E /* CreateTileLayer.storyboard */; };
+		F7E315851E20303A0074A99E /* CreateTilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E315841E20303A0074A99E /* CreateTilesViewController.m */; };
+		F7E315881E26A1B40074A99E /* CreateTilesWizardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E315871E26A1B40074A99E /* CreateTilesWizardViewController.m */; };
+		F7E3158B1E26B2140074A99E /* TableNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E3158A1E26B2140074A99E /* TableNameViewController.m */; };
+		F7E3158E1E26B7D40074A99E /* ZoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E3158D1E26B7D40074A99E /* ZoomViewController.m */; };
+		F7E315911E26C9C80074A99E /* TileLayerBoundsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E315901E26C9C80074A99E /* TileLayerBoundsViewController.m */; };
 		F7E8E4D91DDB7B7700CD9BF5 /* Entry.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7E8E4D81DDB7B7700CD9BF5 /* Entry.storyboard */; };
 		F7E8E4E21DDE337600CD9BF5 /* UIButton+GeoPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E8E4E11DDE337600CD9BF5 /* UIButton+GeoPackage.m */; };
 		F7E8E4E51DDFAF5900CD9BF5 /* UITableViewHeaderFooterView+GeoPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = F7E8E4E41DDFAF5900CD9BF5 /* UITableViewHeaderFooterView+GeoPackage.m */; };
@@ -264,6 +270,17 @@
 		F7E3157C1E1D87E50074A99E /* FeatureIndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeatureIndexViewController.m; path = features/FeatureIndexViewController.m; sourceTree = "<group>"; };
 		F7E3157E1E1D94CE0074A99E /* CreateFeatureIndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreateFeatureIndexViewController.h; path = features/CreateFeatureIndexViewController.h; sourceTree = "<group>"; };
 		F7E3157F1E1D94CE0074A99E /* CreateFeatureIndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreateFeatureIndexViewController.m; path = features/CreateFeatureIndexViewController.m; sourceTree = "<group>"; };
+		F7E315811E1EF8D60074A99E /* CreateTileLayer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateTileLayer.storyboard; sourceTree = "<group>"; };
+		F7E315831E20303A0074A99E /* CreateTilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTilesViewController.h; sourceTree = "<group>"; };
+		F7E315841E20303A0074A99E /* CreateTilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTilesViewController.m; sourceTree = "<group>"; };
+		F7E315861E26A1B40074A99E /* CreateTilesWizardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateTilesWizardViewController.h; sourceTree = "<group>"; };
+		F7E315871E26A1B40074A99E /* CreateTilesWizardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateTilesWizardViewController.m; sourceTree = "<group>"; };
+		F7E315891E26B2140074A99E /* TableNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableNameViewController.h; sourceTree = "<group>"; };
+		F7E3158A1E26B2140074A99E /* TableNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableNameViewController.m; sourceTree = "<group>"; };
+		F7E3158C1E26B7D40074A99E /* ZoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZoomViewController.h; sourceTree = "<group>"; };
+		F7E3158D1E26B7D40074A99E /* ZoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZoomViewController.m; sourceTree = "<group>"; };
+		F7E3158F1E26C9C80074A99E /* TileLayerBoundsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileLayerBoundsViewController.h; sourceTree = "<group>"; };
+		F7E315901E26C9C80074A99E /* TileLayerBoundsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TileLayerBoundsViewController.m; sourceTree = "<group>"; };
 		F7E8E4D81DDB7B7700CD9BF5 /* Entry.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Entry.storyboard; sourceTree = "<group>"; };
 		F7E8E4E01DDE337600CD9BF5 /* UIButton+GeoPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+GeoPackage.h"; sourceTree = "<group>"; };
 		F7E8E4E11DDE337600CD9BF5 /* UIButton+GeoPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+GeoPackage.m"; sourceTree = "<group>"; };
@@ -343,6 +360,7 @@
 				F7BA2FE01DF9C40C00EA5FC7 /* Map.storyboard */,
 				F70F0D421E0492A3006EECB5 /* FeatureTableEdit.storyboard */,
 				F7E315791E1D633A0074A99E /* FeatureIndex.storyboard */,
+				F7E315811E1EF8D60074A99E /* CreateTileLayer.storyboard */,
 			);
 			path = "mapcache-ios";
 			sourceTree = "<group>";
@@ -582,6 +600,16 @@
 			children = (
 				F7BA2FD21DF5C0FA00EA5FC7 /* TileTableTableViewController.h */,
 				F7BA2FD31DF5C0FA00EA5FC7 /* TileTableTableViewController.m */,
+				F7E315831E20303A0074A99E /* CreateTilesViewController.h */,
+				F7E315841E20303A0074A99E /* CreateTilesViewController.m */,
+				F7E315861E26A1B40074A99E /* CreateTilesWizardViewController.h */,
+				F7E315871E26A1B40074A99E /* CreateTilesWizardViewController.m */,
+				F7E315891E26B2140074A99E /* TableNameViewController.h */,
+				F7E3158A1E26B2140074A99E /* TableNameViewController.m */,
+				F7E3158C1E26B7D40074A99E /* ZoomViewController.h */,
+				F7E3158D1E26B7D40074A99E /* ZoomViewController.m */,
+				F7E3158F1E26C9C80074A99E /* TileLayerBoundsViewController.h */,
+				F7E315901E26C9C80074A99E /* TileLayerBoundsViewController.m */,
 			);
 			name = tiles;
 			sourceTree = "<group>";
@@ -652,7 +680,7 @@
 		040136671AF94FB200C92AFC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = NGA;
 				TargetAttributes = {
 					0401366E1AF94FB200C92AFC = {
@@ -701,6 +729,7 @@
 				040136831AF94FB200C92AFC /* Images.xcassets in Resources */,
 				F7E3157A1E1D633A0074A99E /* FeatureIndex.storyboard in Resources */,
 				F79C28AE1DE60F1E00CF86B6 /* InfoStoryboard.storyboard in Resources */,
+				F7E315821E1EF8D60074A99E /* CreateTileLayer.storyboard in Resources */,
 				F7BA2FDB1DF86C0700EA5FC7 /* SrsTable.storyboard in Resources */,
 				F7BA2FE11DF9C40C00EA5FC7 /* Map.storyboard in Resources */,
 			);
@@ -775,6 +804,7 @@
 				043A458B1B7E21E3001B8FC5 /* GPKGSMapPointData.m in Sources */,
 				045C94941B56DF620005CCD0 /* GPKGSIndexerTask.m in Sources */,
 				047733C91B4C496600E523BD /* GPKGSTableOptionsButton.m in Sources */,
+				F7E315851E20303A0074A99E /* CreateTilesViewController.m in Sources */,
 				04E1D8DF1B682D0F002BD947 /* GPKGSFeatureTilesDrawData.m in Sources */,
 				F7BA2FD41DF5C0FA00EA5FC7 /* TileTableTableViewController.m in Sources */,
 				F7E8E4E21DDE337600CD9BF5 /* UIButton+GeoPackage.m in Sources */,
@@ -793,6 +823,8 @@
 				04082B531B4EBE6F00D65E6B /* GPKGSDownloadFileViewController.m in Sources */,
 				F70F0D411E046E95006EECB5 /* FeatureHeaderTableViewCell.m in Sources */,
 				04E1D8D61B66D439002BD947 /* GPKGSEditTilesViewController.m in Sources */,
+				F7E3158B1E26B2140074A99E /* TableNameViewController.m in Sources */,
+				F7E3158E1E26B7D40074A99E /* ZoomViewController.m in Sources */,
 				04E1D8E21B682D5D002BD947 /* GPKGSCreateFeatureTilesViewController.m in Sources */,
 				F79C28BA1DF087EE00CF86B6 /* FeatureTableTableViewController.m in Sources */,
 				04CCC8651B61122A0001296D /* GPKGSGenerateTilesViewController.m in Sources */,
@@ -806,6 +838,7 @@
 				047733BE1B4C371500E523BD /* GPKGSDatabaseOptionsButton.m in Sources */,
 				044647FF1B4AF3870052913B /* GPKGSTable.m in Sources */,
 				04CCC85F1B60225C0001296D /* GPKGSKeyboardConstraint.m in Sources */,
+				F7E315881E26A1B40074A99E /* CreateTilesWizardViewController.m in Sources */,
 				040136781AF94FB200C92AFC /* AppDelegate.m in Sources */,
 				F7BA2FD91DF86ABE00EA5FC7 /* SrsViewController.m in Sources */,
 				F79C28B21DE61D8B00CF86B6 /* InfoTableViewController.m in Sources */,
@@ -819,6 +852,7 @@
 				04CCC8621B60232A0001296D /* GPKGSUIResponder+FirstResponder.m in Sources */,
 				044648111B4B1D960052913B /* GPKGSTableCell.m in Sources */,
 				04CCC86E1B6122040001296D /* GPKGSLoadTilesData.m in Sources */,
+				F7E315911E26C9C80074A99E /* TileLayerBoundsViewController.m in Sources */,
 				044648051B4AF6990052913B /* GPKGSFeatureTable.m in Sources */,
 				043A45911B7E63C1001B8FC5 /* GPKGSEditTypes.m in Sources */,
 				045C94831B4FFE7E0005CCD0 /* GPKGSDisplayTextViewController.m in Sources */,
@@ -890,8 +924,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Brian Osborn (EWV3Z7FJGH)";
@@ -899,6 +935,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -935,8 +972,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Brian Osborn (EWV3Z7FJGH)";
@@ -1009,6 +1048,7 @@
 				);
 				INFOPLIST_FILE = "mapcache-iosTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "mil.nga.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/mapcache-ios.app/mapcache-ios";
 			};
@@ -1024,6 +1064,7 @@
 				);
 				INFOPLIST_FILE = "mapcache-iosTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "mil.nga.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/mapcache-ios.app/mapcache-ios";
 			};
